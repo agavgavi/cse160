@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<style>
+    .circle-icon {
+        cursor: url("lib/images/circle.svg") 7 7, auto;
+    }
+
+    .square-icon {
+        cursor: url("lib/images/square.svg") 7 7, auto;
+    }
+
+    .triangle-icon {
+        cursor: url("lib/images/triangle.svg") 7 7, auto;
+    }
+</style>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Andrew Gavgavian's Assignment 1 For CSE160</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+    <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
+</head>
+
+<body onload="main()">
+    <section class="section">
+        <div class="container">
+            <h1 class="title">
+                Andrew Gavgavian's Assignment 1 For CSE160
+            </h1>
+            <p class="subtitle">
+                Painting Program utilizing <strong>Bulma</strong>! <span class='is-italic'>(It may take a few seconds to
+                    load the CDNs)</span>
+            </p>
+            <div class="tile is-ancestor">
+                <div class="tile is-4 is-vertical is-parent">
+                    <div class="tile is-child box">
+                        <canvas id="webgl" width="400" height="400">
+                            Please use a browser that supports "canvas"
+                        </canvas>
+                    </div>
+                    <div class="tile is-child box content">
+                        <p class="subtitle">What Makes This Awesome:</p>
+                        <p>
+                        <ol>
+                            <li>Utilizing Bulma's CSS Framework to redesign the application.</li>
+                            <li>Adds a second method of color input through the color picker. <span
+                                    class="is-italic">(Note that both the
+                                    sliders and color picker will always stay in sync)</span></li>
+                            <li>The currently selected draw type is always highlighted in green to the right, and
+                                displayed as the cursor over the canvas.</li>
+                        </ol>
+                        </p>
+                    </div>
+                </div>
+                <div class="tile is-parent">
+                    <div class="tile is-child box">
+                        <p class="title">Controls</p>
+                        <div class="block">
+
+                        </div>
+                        <div class="block">
+                            <p class="subtitle">Drawing Mode:</p>
+                            <div class="field is-grouped">
+                                <p class="control">
+                                    <button class="button" id='selPoint'>
+                                        <span class="icon">
+                                            <i class="fas fa-square"></i>
+                                        </span>
+                                        <span>Squares</span>
+                                    </button>
+                                </p>
+                                <p class="control">
+                                    <button class="button" id='selTriangle'>
+                                        <span class="icon">
+                                            <i class="fas fa-exclamation-triangle"></i>
+                                        </span>
+                                        <span>Triangles</span>
+                                    </button>
+                                </p>
+                                <p class="control">
+                                    <button class="button" id='selCircle'>
+                                        <span class="icon">
+                                            <i class="fas fa-circle"></i>
+                                        </span>
+                                        <span>Circle</span>
+                                    </button>
+                                </p>
+                                <p class="control">
+                                    <button class="button is-warning" id='clearButt'>
+                                        <span class="icon">
+                                            <i class="fas fa-trash"></i>
+                                        </span>
+                                        <span>Clear Canvas</span>
+                                    </button>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="block">
+                            <p class="subtitle">Shape Color:</p>
+                            <div class="field is-horizontal">
+                                <div class="field-body">
+                                    <div class="field is-narrow">
+                                        <label class="label has-text-danger">Red</label>
+                                        <input type="range" name="rColor" id="rSlider" min=0 max=255 value=255>
+                                    </div>
+                                    <div class="field is-narrow">
+                                        <label class="label has-text-success">Green</label>
+                                        <input type="range" name="gColor" id="gSlider" min=0 max=255 value=0>
+                                    </div>
+                                    <div class="field is-narrow">
+                                        <label class="label has-text-link">Blue</label>
+                                        <input type="range" name="bColor" id="bSlider" min=0 max=255 value=0>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <div class="field-body">
+                                    <div class="field is-narrow">
+                                        <div class="control">
+                                            <label class="label" for="color-picker">Or select the color here:</label>
+                                            <input class="input" type="color" id="color-picker" name="color-picker"
+                                                value="#ff0000">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="block">
+                            <p class="subtitle">Shape Adjustments:</p>
+                            <div class="field is-horizontal">
+                                <div class="field-body">
+                                    <div class="field is-narrow">
+                                        <label class="label" for="sizeSlider">Shape Size: </label>
+                                        <input type="range" class="slider" id="sizeSlider" min=5 max=50 value=10>
+                                    </div>
+                                    <div class="field is-narrow">
+                                        <label class="label" for="sizeSlider">Segment Count <span class="icon">
+                                                <i class="fas fa-circle"></i>
+                                            </span> : </label>
+                                        <input type="range" class="slider" id="segSlider" min=5 max=50 value=10>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script src="lib/webgl-utils.js"></script>
+    <script src="lib/webgl-debug.js"></script>
+    <script src="lib/cuon-utils.js"></script>
+    <script src="Circle.js"></script>
+    <script src="Triangle.js"></script>
+    <script src="Point.js"></script>
+    <script src="ColoredPoints.js"></script>
+</body>
+
+</html>
