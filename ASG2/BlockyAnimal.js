@@ -15,11 +15,6 @@ void main() {
     gl_FragColor = u_FragColor;
 }`;
 
-let types = {
-    POINT: 0,
-    TRIANGLE: 1,
-    CIRCLE: 2
-};
 // All Global Variables Here
 let canvas;         // The canvas where things are being drawn
 let gl;             // The WebGL variable used to control the page
@@ -27,12 +22,7 @@ let a_Position;     // A GLSL variable used to store the location of the point d
 let u_FragColor;    // A GLSL shader variable to store the color of the point being drawn.
 let u_PointSize;    // A GLSL uniform shader variable that allows the size to change.
 
-var g_ShapesList = []; // A list of all shapes currently to be displayed
 
-var gl_currentColor = [1.0, 0.0, 0.0, 1.0];
-var gl_currentSize = 10;
-var gl_currentType = types.POINT;
-var gl_currentSegments = 10;
 
 function main() {
 
