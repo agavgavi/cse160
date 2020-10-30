@@ -1,11 +1,8 @@
 
 class Cube {
     constructor() {
-        this.type = 'circle';
-        // this.pos = [0, 0, 0];
+        this.type = 'cube';
         this.color = [1, 0, 0, 1];
-        // this.size = 10;
-        // this.segments = segments;
         this.matrix = new Matrix4();
     }
 
