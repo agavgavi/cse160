@@ -1,25 +1,30 @@
 
 var VSHADER_SOURCE = `
 attribute vec4 a_Position;
+attribute vec4 a_Color;
+
+varying vec4 v_Color;
+
 uniform mat4 u_ModelMatrix;
 uniform mat4 u_GlobalRotateMatrix;
 void main() {
+    v_Color = a_Color;
     gl_Position = u_GlobalRotateMatrix * u_ModelMatrix * a_Position;
 }`;
 
 // Fragment shader program
 var FSHADER_SOURCE = `
 precision mediump float;
-uniform vec4 u_FragColor;
+varying vec4 v_Color;
 void main() {
-    gl_FragColor = u_FragColor;
+    gl_FragColor = v_Color;
 }`;
 
 // All Global Variables Here
 let canvas;         // The canvas where things are being drawn
 let gl;             // The WebGL variable used to control the page
 let a_Position;     // A GLSL variable used to store the location of the point drawn
-let u_FragColor;    // A GLSL shader variable to store the color of the point being drawn.
+let a_Color;
 let u_ModelMatrix;    // A GLSL uniform shader variable that allows the size to change.
 let u_GlobalRotateMatrix;
 
@@ -79,10 +84,10 @@ function initAllShaders() {
         return;
     }
 
-    // Get the storage location of u_FragColor
-    u_FragColor = gl.getUniformLocation(gl.program, 'u_FragColor');
-    if (!u_FragColor) {
-        console.log('Failed to get the storage location of u_FragColor');
+    // Get the storage location of a_Color
+    a_Color = gl.getAttribLocation(gl.program, 'a_Color');
+    if (!a_Color) {
+        console.log('Failed to get the storage location of a_Color');
         return;
     }
 

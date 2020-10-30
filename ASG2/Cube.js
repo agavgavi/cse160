@@ -10,10 +10,9 @@ class Cube {
     }
 
     render() {
-        // var xy = this.pos;
-        // var size = this.size;
         var rgba = this.color;
-        var arr = [0, 0, 0, 1, 1, 0, 1, 0, 0,
+        var verticies = new Float32Array([
+            0, 0, 0, 1, 1, 0, 1, 0, 0,
             0, 0, 0, 0, 1, 0, 1, 1, 0,
             0, 0, 1, 1, 1, 1, 1, 0, 1,
             0, 0, 1, 0, 1, 1, 1, 1, 1,
@@ -24,50 +23,23 @@ class Cube {
             0, 1, 0, 1, 1, 1, 1, 1, 0,
             0, 1, 0, 0, 1, 1, 1, 1, 1,
             0, 0, 0, 1, 0, 1, 1, 0, 0,
-            0, 0, 0, 0, 0, 1, 1, 0, 1,];
-        //console.log(arr);
-        // Pass the size to GLSL
-        // gl.uniform4f(u_PointSize, size);
+            0, 0, 0, 0, 0, 1, 1, 0, 1
+        ]);
 
+        var frontCol = getColorArray(rgba, 1);
+        var backCol = getColorArray(rgba, 0.8);
+        var leftCol = getColorArray(rgba, 0.9);
+        var rightCol = getColorArray(rgba, 0.7);
+        var topCol = getColorArray(rgba, 0.95);
+        var bottomCol = getColorArray(rgba, 0.5);
 
-
-        // // Pass the color of a point to u_FragColor variable
-        gl.uniform4f(u_FragColor, rgba[0], rgba[1], rgba[2], rgba[3]);
-        // // Draw
-
-
-        gl.uniformMatrix4fv(u_ModelMatrix, false, this.matrix.elements);
-        // // FRONT -----------------------------------------------------
-        drawCube(arr);
-        // drawTriangle3D([0, 0, 0, 1, 1, 0, 1, 0, 0]);
-        // drawTriangle3D([0, 0, 0, 0, 1, 0, 1, 1, 0]);
-
-        // gl.uniform4f(u_FragColor, rgba[0] * .7, rgba[1] * .7, rgba[2] * .7, rgba[3]);
-        // // BACK -----------------------------------------------------
-        // drawTriangle3D([0, 0, 1, 1, 1, 1, 1, 0, 1]);
-        // drawTriangle3D([0, 0, 1, 0, 1, 1, 1, 1, 1]);
-
-        // gl.uniform4f(u_FragColor, rgba[0] * .8, rgba[1] * .8, rgba[2] * .8, rgba[3]);
-        // // LEFT -----------------------------------------------------
-        // drawTriangle3D([0, 0, 0, 0, 1, 1, 0, 0, 1]);
-        // drawTriangle3D([0, 0, 0, 0, 1, 0, 0, 1, 1]);
-
-        // // RIGHT -----------------------------------------------------
-        // drawTriangle3D([1, 0, 0, 1, 1, 1, 1, 0, 1]);
-        // drawTriangle3D([1, 0, 0, 1, 1, 0, 1, 1, 1]);
-
-        // gl.uniform4f(u_FragColor, rgba[0] * .9, rgba[1] * .9, rgba[2] * .9, rgba[3]);
-        // // UP -----------------------------------------------------
-        // drawTriangle3D([0, 1, 0, 1, 1, 1, 1, 1, 0]);
-        // drawTriangle3D([0, 1, 0, 0, 1, 1, 1, 1, 1]);
-
-        // // DOWN -----------------------------------------------------
-        // drawTriangle3D([0, 0, 0, 1, 0, 1, 1, 0, 0]);
-        // drawTriangle3D([0, 0, 0, 0, 0, 1, 1, 0, 1]);
+        var color = new Float32Array(frontCol.concat(backCol, leftCol, rightCol, topCol, bottomCol));
+        drawCube(verticies, this.matrix, color);
     }
+
 };
 
-function drawCube(vertices) {
+function drawCube(vertices, matrix, color) {
     var n = 36; // The number of vertices
 
     // Create a buffer object
@@ -80,13 +52,35 @@ function drawCube(vertices) {
     // Bind the buffer object to target
     gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
     // Write date into the buffer object
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.DYNAMIC_DRAW);
+    gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
+    // Bind the buffer object to target
+    gl.bindBuffer(gl.ARRAY_BUFFER, null);
+
+
+    // Create a buffer object
+    var colorBuffer = gl.createBuffer();
+    if (!colorBuffer) {
+        console.log('Failed to create the ColorBuffer object');
+        return -1;
+    }
+    gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
+    // Write date into the buffer object
+    gl.bufferData(gl.ARRAY_BUFFER, color, gl.STATIC_DRAW);
 
     // Assign the buffer object to a_Position variable
+    gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
     gl.vertexAttribPointer(a_Position, 3, gl.FLOAT, false, 0, 0);
-
-    // Enable the assignment to a_Position variable
     gl.enableVertexAttribArray(a_Position);
+
+    gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
+    gl.vertexAttribPointer(a_Color, 3, gl.FLOAT, false, 0, 0);
+    gl.enableVertexAttribArray(a_Color);
+    gl.uniformMatrix4fv(u_ModelMatrix, false, matrix.elements);
 
     gl.drawArrays(gl.TRIANGLES, 0, n);
 }
+
+function getColorArray(rgba, weight = 1) {
+    return [rgba[0] * weight, rgba[1] * weight, rgba[2] * weight, rgba[0] * weight, rgba[1] * weight, rgba[2] * weight, rgba[0] * weight, rgba[1] * weight, rgba[2] * weight,
+    rgba[0] * weight, rgba[1] * weight, rgba[2] * weight, rgba[0] * weight, rgba[1] * weight, rgba[2] * weight, rgba[0] * weight, rgba[1] * weight, rgba[2] * weight]
+} 
