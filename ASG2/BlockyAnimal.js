@@ -24,6 +24,10 @@ let u_ModelMatrix;    // A GLSL uniform shader variable that allows the size to 
 let u_GlobalRotateMatrix;
 
 let g_globalAngle = 0;
+let g_YellowAngle = 0;
+let g_magentaAngle = 0;
+
+let doAnimation = false;
 
 
 function main() {
@@ -39,10 +43,12 @@ function main() {
 
 
     // Specify the color for clearing <canvas>
-    gl.clearColor(0.0, 0.0, 0.0, 1.0);
+    gl.clearColor(0, 0, 0, 1);
 
     // // Clear <canvas>
-    renderAllShapes();
+    // renderAllShapes();
+
+    requestAnimationFrame(tick);
 }
 
 // Initialize Canvas/WebGl to start
@@ -102,7 +108,12 @@ function initAllShaders() {
 function setUpAllEvents() {
     // Set up all canvas attributes
 
-    document.getElementById('angleSlide').addEventListener('mousemove', function (ev) { if (ev.buttons) { g_globalAngle = this.value; renderAllShapes(); } })
+    document.getElementById('angleSlide').addEventListener('mousemove', function (ev) { if (ev.buttons) { g_globalAngle = this.value; renderAllShapes(); } });
+    document.getElementById('yellowSlide').addEventListener('mousemove', function (ev) { if (ev.buttons) { g_YellowAngle = this.value; renderAllShapes(); } });
+    document.getElementById('boxSlide').addEventListener('mousemove', function (ev) { if (ev.buttons) { g_magentaAngle = this.value; renderAllShapes(); } });
+    document.getElementById('animateYellowButtonON').onclick = function () { doAnimation = true; tick(); };
+
+    document.getElementById('animateYellowButtonOFF').onclick = function () { doAnimation = false; };
 }
 
 
@@ -150,6 +161,11 @@ function coordsToWebGL(ev) {
 
     return [x, y];
 }
+function updateAnimationAngles() {
+    if (doAnimation) {
+        g_YellowAngle = (45 * Math.sin(g_seconds));
+    }
+}
 
 // Goes through the global lists and renders all points on the page
 function renderAllShapes() {
@@ -159,22 +175,44 @@ function renderAllShapes() {
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
     var body = new Cube();
-    body.color = [1.0, 0.0, 0.0, 1.0];
-    body.matrix.translate(-.25, -.5, 0);
-    body.matrix.scale(0.5, 1, .5);
+    body.color = [1, 0, 0, 1];
+    body.matrix.translate(-.25, -.75, 0);
+    body.matrix.rotate(-5, 1, 0, 0);
+    body.matrix.scale(0.5, .3, .5);
     body.render();
 
     var leftArm = new Cube();
-    leftArm.color = [1.0, 1.0, 0.0, 1.0];
-    leftArm.matrix.translate(.7, 0, 0);
-    leftArm.matrix.rotate(45, 0, 0, 1);
+    leftArm.color = [1, 1, 0, 1];
+    leftArm.matrix.setTranslate(0, -.5, 0);
+    leftArm.matrix.rotate(-5, 1, 0, 0);
+    leftArm.matrix.rotate(-g_YellowAngle, 0, 0, 1);
+    var yellowCoordsMat = new Matrix4(leftArm.matrix);
     leftArm.matrix.scale(0.25, .7, .5);
+    leftArm.matrix.translate(-.5, 0, 0);
     leftArm.render();
 
     var testBox = new Cube();
-    testBox.color = [1.0, 0.0, 1.0, 1.0];
-    testBox.matrix.translate(0, 0, -.50);
-    testBox.matrix.rotate(-30, 1, 0, 0);
-    testBox.matrix.scale(.5, .5, .5);
+    testBox.color = [1, 0, 1, 1];
+    testBox.matrix = yellowCoordsMat;
+    testBox.matrix.translate(0, 0.65, 0);
+    testBox.matrix.rotate(g_magentaAngle, 0, 0, 1);
+    testBox.matrix.scale(.3, .3, .3);
+    testBox.matrix.translate(-.5, 0, -0.001);
     testBox.render();
+
+
+}
+
+var g_startTime = performance.now() / 1000.0;
+var g_seconds = performance.now() / 1000.0 - g_startTime;
+function tick() {
+    g_seconds = performance.now() / 1000.0 - g_startTime;
+    console.log(g_seconds);
+
+    updateAnimationAngles();
+    renderAllShapes();
+
+    if (doAnimation) {
+        requestAnimationFrame(tick);
+    }
 }
