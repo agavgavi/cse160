@@ -1,10 +1,10 @@
 
 var VSHADER_SOURCE = `
 attribute vec4 a_Position;
-uniform float u_PointSize;
+uniform mat4 u_ModelMatrix;
+uniform mat4 u_GlobalRotateMatrix;
 void main() {
-    gl_Position = a_Position;
-    gl_PointSize = u_PointSize;
+    gl_Position = u_GlobalRotateMatrix * u_ModelMatrix * a_Position;
 }`;
 
 // Fragment shader program
@@ -20,8 +20,10 @@ let canvas;         // The canvas where things are being drawn
 let gl;             // The WebGL variable used to control the page
 let a_Position;     // A GLSL variable used to store the location of the point drawn
 let u_FragColor;    // A GLSL shader variable to store the color of the point being drawn.
-let u_PointSize;    // A GLSL uniform shader variable that allows the size to change.
+let u_ModelMatrix;    // A GLSL uniform shader variable that allows the size to change.
+let u_GlobalRotateMatrix;
 
+let g_globalAngle = 0;
 
 
 function main() {
@@ -78,19 +80,29 @@ function initAllShaders() {
         return;
     }
 
-    // Get the storage location of u_FragColor
-    u_PointSize = gl.getUniformLocation(gl.program, 'u_PointSize');
-    if (!u_PointSize) {
-        console.log('Failed to get the storage location of u_PointSize');
+    // Get the storage location of u_ModelMatrix
+    u_ModelMatrix = gl.getUniformLocation(gl.program, 'u_ModelMatrix');
+    if (!u_ModelMatrix) {
+        console.log('Failed to get the storage location of u_ModelMatrix');
         return;
     }
+
+    // Get the storage location of u_GlobalRotateMatrix
+    u_GlobalRotateMatrix = gl.getUniformLocation(gl.program, 'u_GlobalRotateMatrix');
+    if (!u_GlobalRotateMatrix) {
+        console.log('Failed to get the storage location of u_GlobalRotateMatrix');
+        return;
+    }
+
+    var identityM = new Matrix4();
+    gl.uniformMatrix4fv(u_ModelMatrix, false, identityM.elements);
 }
 
 // All UI actions will be connected here.
 function setUpAllEvents() {
     // Set up all canvas attributes
 
-
+    document.getElementById('angleSlide').addEventListener('mousemove', function (ev) { if (ev.buttons) { g_globalAngle = this.value; renderAllShapes(); } })
 }
 
 
@@ -141,15 +153,28 @@ function coordsToWebGL(ev) {
 
 // Goes through the global lists and renders all points on the page
 function renderAllShapes() {
+    var globalRotMat = new Matrix4().rotate(g_globalAngle, 0, 1, 0);
+    gl.uniformMatrix4fv(u_GlobalRotateMatrix, false, globalRotMat.elements);
     // Clear <canvas>
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-    // var len = g_ShapesList.length;
-    // for (var i = 0; i < len; i++) {
-    //     g_ShapesList[i].render();
-    // }
-
     var body = new Cube();
     body.color = [1.0, 0.0, 0.0, 1.0];
+    body.matrix.translate(-.25, -.5, 0);
+    body.matrix.scale(0.5, 1, .5);
     body.render();
+
+    var leftArm = new Cube();
+    leftArm.color = [1.0, 1.0, 0.0, 1.0];
+    leftArm.matrix.translate(.7, 0, 0);
+    leftArm.matrix.rotate(45, 0, 0, 1);
+    leftArm.matrix.scale(0.25, .7, .5);
+    leftArm.render();
+
+    var testBox = new Cube();
+    testBox.color = [1.0, 0.0, 1.0, 1.0];
+    testBox.matrix.translate(0, 0, -.50);
+    testBox.matrix.rotate(-30, 1, 0, 0);
+    testBox.matrix.scale(.5, .5, .5);
+    testBox.render();
 }
