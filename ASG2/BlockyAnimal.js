@@ -31,6 +31,7 @@ let u_GlobalRotateMatrix;
 let g_globalAngle = 0;
 let g_headAngle = 0;
 let g_tailAngle = 0;
+let g_earAngle = 0;
 
 let doAnimation = false;
 
@@ -117,8 +118,9 @@ function setUpAllEvents() {
     // Set up all canvas attributes
 
     document.getElementById('angleSlide').addEventListener('mousemove', function (ev) { if (ev.buttons) { g_globalAngle = this.value; renderAllShapes(); } });
-    document.getElementById('yellowSlide').addEventListener('mousemove', function (ev) { if (ev.buttons) { g_headAngle = this.value; renderAllShapes(); } });
-    document.getElementById('boxSlide').addEventListener('mousemove', function (ev) { if (ev.buttons) { g_tailAngle = this.value; renderAllShapes(); } });
+    document.getElementById('headSlide').addEventListener('mousemove', function (ev) { if (ev.buttons) { g_headAngle = this.value; renderAllShapes(); } });
+    document.getElementById('tailSide').addEventListener('mousemove', function (ev) { if (ev.buttons) { g_tailAngle = this.value; renderAllShapes(); } });
+    document.getElementById('earSlide').addEventListener('mousemove', function (ev) { if (ev.buttons) { g_earAngle = this.value; renderAllShapes(); } });
     document.getElementById('animateYellowButtonON').onclick = function () { doAnimation = true; tick(); };
 
     document.getElementById('animateYellowButtonOFF').onclick = function () { doAnimation = false; };
@@ -171,7 +173,9 @@ function coordsToWebGL(ev) {
 }
 function updateAnimationAngles() {
     if (doAnimation) {
-        g_headAngle = (45 * Math.sin(g_seconds));
+        g_headAngle = (12 * Math.sin(g_seconds));
+        g_tailAngle = (7 * Math.sin(g_seconds));
+        g_earAngle = (7 * Math.cos(g_seconds));
     }
 }
 
@@ -185,16 +189,17 @@ function renderAllShapes() {
     var body = new Cube();
     body.color = [216 / 255, 222 / 255, 233 / 255, 1];
     body.matrix.translate(0, 0, 0);
+    var bodyC = new Matrix4(body.matrix);
     body.matrix.scale(.4, .4, .8);
     body.render();
 
     var tail = new Cube();
     tail.color = [200 / 255, 200 / 255, 200 / 255, 1];
-    tail.matrix.set(body.matrix);
-    tail.matrix.scale(.33, .33, .5);
-    tail.matrix.translate(0, 0, 1.5);
+    tail.matrix.set(bodyC);
     tail.matrix.rotate(10, 1, 0, 0);
-    tail.matrix.rotate(-g_tailAngle, 1, 0, 0);
+    tail.matrix.rotate(-g_tailAngle, 0, 1, 0);
+    tail.matrix.scale(.125, .125, .5);
+    tail.matrix.translate(0, 0, 1.25);
     tail.render();
 
     var mane = new Cube();
@@ -202,7 +207,6 @@ function renderAllShapes() {
     mane.matrix.set(body.matrix);
     mane.matrix.scale(1.2, 1.2, .35);
     mane.matrix.translate(0, 0, -1.5);
-    mane.matrix.rotate(45, 1, 0, 0);
     mane.matrix.rotate(-g_headAngle, 1, 0, 0);
     mane.render();
 
@@ -223,6 +227,7 @@ function renderAllShapes() {
     var leftEar = new Cube();
     leftEar.color = [160 / 255, 160 / 255, 160 / 255, 1];
     leftEar.matrix.set(head.matrix);
+    leftEar.matrix.rotate(g_earAngle, 0, 0, 1);
     leftEar.matrix.scale(.33, .5, .33);
     leftEar.matrix.translate(-1, 1.125, 1);
     leftEar.render();
@@ -230,6 +235,7 @@ function renderAllShapes() {
     var rightEar = new Cube();
     rightEar.color = [160 / 255, 160 / 255, 160 / 255, 1];
     rightEar.matrix.set(head.matrix);
+    rightEar.matrix.rotate(-g_earAngle, 0, 0, 1);
     rightEar.matrix.scale(.33, .5, .33);
     rightEar.matrix.translate(1, 1.125, 1);
     rightEar.render();
@@ -261,6 +267,7 @@ function renderAllShapes() {
     rightPupil.matrix.scale(.5, 1, .5);
     rightPupil.matrix.translate(-.5, 0, -1);
     rightPupil.render();
+
 
 }
 
