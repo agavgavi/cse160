@@ -37,6 +37,7 @@ let g_earAngle = 0;
 let g_legAngle = 0;
 
 let doAnimation = false;
+let isAngry = false;
 
 let g_ShapesList = [];
 
@@ -138,7 +139,11 @@ function setUpAllEvents() {
 
     document.getElementById('animateYellowButtonOFF').onclick = function () { doAnimation = false; };
 
+    document.getElementById('setAnger').onclick = function () { isAngry = !isAngry; this.classList.toggle('is-danger'); renderAllShapes(); };
+
     document.getElementById('resetCam').onclick = resetCam;
+
+    document.getElementById('resetAnim').onclick = resetAnimation;
 }
 
 function resetCam() {
@@ -152,6 +157,23 @@ function resetCam() {
 
     document.getElementById('ZangleSlide').value = 0;
 
+    renderAllShapes();
+}
+
+function resetAnimation() {
+    g_headAngle = 0;
+    g_tailAngle = 0;
+    g_earAngle = 0;
+    g_legAngle = 0;
+
+    document.getElementById('headSlide').value = 0;
+
+    document.getElementById('tailSide').value = 0;
+
+    document.getElementById('earSlide').value = 0;
+
+    g_ShapesList.length = 0;
+    setupCubes();
     renderAllShapes();
 }
 
@@ -191,10 +213,12 @@ function setupCubes() {
     var globalRotMat = new Matrix4();
     var body = new Cube([190 / 255, 187 / 255, 187 / 255, 1]);
     var tail = new Cube([199 / 255, 196 / 255, 197 / 255, 1]);
-    var mane = new Cube([199 / 255, 196 / 255, 197 / 255, 1]);
-    var head = new Cube([218 / 255, 215 / 255, 216 / 255, 1]);
-    var snout = new Cube([209 / 255, 178 / 255, 161 / 255, 1]);
+    var mane = new Cube([173 / 255, 167 / 255, 164 / 255, 1]);
+    var head = new Cube([140 / 255, 137 / 255, 137 / 255, 1]);
+    var mouth = new Cube([121 / 255, 103 / 255, 91 / 255, 1]);
+    var snout = new Cube([146 / 255, 121 / 255, 102 / 255, 1]);
     var nose = new Cube([13 / 255, 14 / 255, 16 / 255, 1]);
+    var jaw = new Cube([13 / 255, 14 / 255, 16 / 255, 1]);
     var leftEar = new Cube([160 / 255, 158 / 255, 158 / 255, 1]);
     var rightEar = new Cube([160 / 255, 158 / 255, 158 / 255, 1]);
     var leftIris = new Cube([184 / 255, 184 / 255, 184 / 255, 1]);
@@ -205,12 +229,17 @@ function setupCubes() {
     var frLeg = new Cube([146 / 255, 144 / 255, 145 / 255, 1]);
     var blLeg = new Cube([146 / 255, 144 / 255, 145 / 255, 1]);
     var brLeg = new Cube([146 / 255, 144 / 255, 145 / 255, 1]);
+    var boneMid = new Cube([227 / 255, 227 / 255, 227 / 255, 1]);
+    var boneLT = new Cube([227 / 255, 227 / 255, 227 / 255, 1]);
+    var boneLB = new Cube([227 / 255, 227 / 255, 227 / 255, 1]);
+    var boneRT = new Cube([227 / 255, 227 / 255, 227 / 255, 1]);
+    var boneRB = new Cube([227 / 255, 227 / 255, 227 / 255, 1]);
 
     g_ShapesList.push(globalRotMat,
-        body, tail, mane, head,
-        snout, nose, leftEar, rightEar,
+        body, tail, mane, head, mouth,
+        snout, nose, jaw, leftEar, rightEar,
         leftIris, rightIris, leftPupil, rightPupil,
-        flLeg, frLeg, blLeg, brLeg);
+        flLeg, frLeg, blLeg, brLeg, boneMid, boneLT, boneLB, boneRT, boneRB);
 }
 // Goes through the global lists and renders all points on the page
 function renderAllShapes() {
@@ -225,22 +254,30 @@ function renderAllShapes() {
 
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-    let body = g_ShapesList[1];
-    let tail = g_ShapesList[2];
-    let mane = g_ShapesList[3];
-    let head = g_ShapesList[4];
-    let snout = g_ShapesList[5];
-    let nose = g_ShapesList[6];
-    let leftEar = g_ShapesList[7];
-    let rightEar = g_ShapesList[8];
-    let leftIris = g_ShapesList[9];
-    let rightIris = g_ShapesList[10];
-    let leftPupil = g_ShapesList[11];
-    let rightPupil = g_ShapesList[12];
-    let flLeg = g_ShapesList[13];
-    let frLeg = g_ShapesList[14];
-    let blLeg = g_ShapesList[15];
-    let brLeg = g_ShapesList[16];
+    var i = 1;
+    let body = g_ShapesList[i++];
+    let tail = g_ShapesList[i++];
+    let mane = g_ShapesList[i++];
+    let head = g_ShapesList[i++];
+    let mouth = g_ShapesList[i++];
+    let snout = g_ShapesList[i++];
+    let nose = g_ShapesList[i++];
+    let jaw = g_ShapesList[i++];
+    let leftEar = g_ShapesList[i++];
+    let rightEar = g_ShapesList[i++];
+    let leftIris = g_ShapesList[i++];
+    let rightIris = g_ShapesList[i++];
+    let leftPupil = g_ShapesList[i++];
+    let rightPupil = g_ShapesList[i++];
+    let flLeg = g_ShapesList[i++];
+    let frLeg = g_ShapesList[i++];
+    let blLeg = g_ShapesList[i++];
+    let brLeg = g_ShapesList[i++];
+    let boneMid = g_ShapesList[i++];
+    let boneLT = g_ShapesList[i++];
+    let boneLB = g_ShapesList[i++];
+    let boneRT = g_ShapesList[i++];
+    let boneRB = g_ShapesList[i++];
 
 
     body.matrix.setIdentity();
@@ -267,6 +304,12 @@ function renderAllShapes() {
     head.matrix.translate(0, 0, -1.5);
     head.render();
 
+    mouth.matrix.setIdentity();
+    mouth.matrix.set(head.matrix);
+    mouth.matrix.scale(1.021, .5, 1);
+    mouth.matrix.translate(0, -.5001, -0.001);
+    mouth.render();
+
     snout.matrix.setIdentity();
     snout.matrix.set(head.matrix);
     snout.matrix.scale(.5, .5, 1);
@@ -276,8 +319,14 @@ function renderAllShapes() {
     nose.matrix.setIdentity();
     nose.matrix.set(snout.matrix);
     nose.matrix.scale(.5, .5, .5);
-    nose.matrix.translate(0, .5, -.65);
+    nose.matrix.translate(0, .52, -.65);
     nose.render();
+
+    jaw.matrix.setIdentity();
+    jaw.matrix.set(snout.matrix);
+    jaw.matrix.scale(1.001, .3001, 1.001);
+    jaw.matrix.translate(0, -1, 0);
+    jaw.render();
 
 
     leftEar.matrix.setIdentity();
@@ -293,6 +342,8 @@ function renderAllShapes() {
     rightEar.matrix.scale(.33, .5, .33);
     rightEar.matrix.translate(1, 1.125, 1);
     rightEar.render();
+
+    toggleAnger(leftPupil, rightPupil);
 
     leftIris.matrix.setIdentity();
     leftIris.matrix.set(head.matrix);
@@ -346,6 +397,51 @@ function renderAllShapes() {
     brLeg.matrix.translate(.8, -.9, 2.5);
     brLeg.render();
 
+    boneMid.matrix.setIdentity();
+    boneMid.matrix.set(jaw.matrix);
+    boneMid.matrix.scale(1.5, .5, .5);
+    boneMid.matrix.translate(0, -.1, -.7);
+
+
+    boneLT.matrix.setIdentity();
+    boneLT.matrix.set(boneMid.matrix);
+    boneLT.matrix.scale(.25, 1.75, .5);
+    boneLT.matrix.translate(-1.75, -.1, -.7);
+    boneLT.matrix.rotate(-30, 0, 1, 0);
+
+
+    boneLB.matrix.setIdentity();
+    boneLB.matrix.set(boneMid.matrix);
+    boneLB.matrix.scale(.25, 1.75, .5);
+    boneLB.matrix.translate(-1.75, -.1, .7);
+    boneLB.matrix.rotate(30, 0, 1, 0);
+
+
+    boneRT.matrix.setIdentity();
+    boneRT.matrix.set(boneMid.matrix);
+    boneRT.matrix.scale(.25, 1.75, .5);
+    boneRT.matrix.translate(1.75, -.1, -.7);
+    boneRT.matrix.rotate(30, 0, 1, 0);
+
+
+    boneRB.matrix.setIdentity();
+    boneRB.matrix.set(boneMid.matrix);
+    boneRB.matrix.scale(.25, 1.75, .5);
+    boneRB.matrix.translate(1.75, -.1, .7);
+    boneRB.matrix.rotate(-30, 0, 1, 0);
+
+    if (!isAngry) {
+        boneMid.render();
+        boneLT.render();
+        boneLB.render();
+        boneRT.render();
+        boneRB.render();
+    }
+
+
+
+
+
 }
 
 var g_startTime = performance.now() / 1000.0;
@@ -359,4 +455,27 @@ function tick() {
     if (doAnimation) {
         requestAnimationFrame(tick);
     }
+}
+
+function toggleAnger(leftPupil, rightPupil) {
+    if (isAngry == false) {
+        if (leftPupil.color != [13 / 255, 14 / 255, 16 / 255, 1]) {
+            leftPupil.color = [13 / 255, 14 / 255, 16 / 255, 1];
+            leftPupil.colorArray = makeArray(leftPupil.color);
+        }
+        if (rightPupil.color != [13 / 255, 14 / 255, 16 / 255, 1]) {
+            rightPupil.color = [13 / 255, 14 / 255, 16 / 255, 1];
+            rightPupil.colorArray = makeArray(rightPupil.color);
+        }
+    } else {
+        if (leftPupil.color != [228 / 255, 46 / 255, 46 / 255, 1]) {
+            leftPupil.color = [228 / 255, 46 / 255, 46 / 255, 1];
+            leftPupil.colorArray = makeArray(leftPupil.color);
+        }
+        if (rightPupil.color != [228 / 255, 46 / 255, 46 / 255, 1]) {
+            rightPupil.color = [228 / 255, 46 / 255, 46 / 255, 1];
+            rightPupil.colorArray = makeArray(rightPupil.color);
+        }
+    }
+
 }

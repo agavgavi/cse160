@@ -19,30 +19,44 @@
             <canvas id="webgl" width="400" height="400">
                 Please use a browser that supports "canvas"
             </canvas>
-            <p>
-                Animations:
-                <button id="animateYellowButtonON" class="button is-small">ON</button>
-                <button id="animateYellowButtonOFF" class="button is-small">OFF</button>
-            </p>
-            <p>
-                <button id="resetCam" class="button is-small">Reset Camera Angle</button>
-            </p>
-            <p>
-                X Camera Angle: <input type="range" min=-180 max=180 value=0 id="XangleSlide">
-            </p>
-            <p>
-                Y Camera Angle: <input type="range" min=-180 max=180 value=0 id="YangleSlide">
-            </p>
-            <p>
-                Z Camera Angle: <input type="range" min=-180 max=180 value=0 id="ZangleSlide">
-            </p>
-            <p>
+            <div>
+                <p class="is-size-3">Animations:</p>
+                <div class="buttons">
+                    <button id="animateYellowButtonON" class="button is-small">ON</button>
+                    <button id="animateYellowButtonOFF" class="button is-small">OFF</button>
+                    <button id="resetAnim" class="button is-small is-success">Reset Animation</button>
+                </div>
+            </div>
+            <div>
+                <p class="is-size-3">Options:</p>
+                <div class="buttons">
+                    <button id="setAnger" class="button is-small">Anger Mode</button>
+                </div>
+            </div>
+            <div>
+                <p class="is-size-3">Camera Options:</p>
+                <div class="buttons">
+                    <button id="resetCam" class="button is-small">Reset Camera Angle</button>
+                </div>
+                <div>
+                    X Camera Angle: <input type="range" min=-180 max=180 value=0 id="XangleSlide">
+                </div>
+                <div>
+                    Y Camera Angle: <input type="range" min=-180 max=180 value=0 id="YangleSlide">
+                </div>
+                <div>
+                    Z Camera Angle: <input type="range" min=-180 max=180 value=0 id="ZangleSlide">
+                </div>
+
+            </div>
+
+            <div>
                 Head Nodding: <input type="range" min=-12 max=12 value=0 id="headSlide">
                 Ear Wagging: <input type="range" min=-12 max=12 value=0 id="earSlide">
-            </p>
-            <p>
+            </div>
+            <div>
                 Tail Wagging: <input type="range" min=-7 max=7 value=0 id="tailSide">
-            </p>
+            </div>
         </div>
     </section>
     <script src="lib/webgl-utils.js"></script>
