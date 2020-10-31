@@ -28,9 +28,9 @@ let a_Color;
 let u_ModelMatrix;    // A GLSL uniform shader variable that allows the size to change.
 let u_GlobalRotateMatrix;
 
-let g_globalAngle = 45;
-let g_YellowAngle = 0;
-let g_magentaAngle = 0;
+let g_globalAngle = 0;
+let g_headAngle = 0;
+let g_tailAngle = 0;
 
 let doAnimation = false;
 
@@ -48,7 +48,7 @@ function main() {
 
 
     // Specify the color for clearing <canvas>
-    gl.clearColor(0, 0, 0, 1);
+    gl.clearColor(94 / 255, 129 / 255, 172 / 255, 1);
 
     // // Clear <canvas>
     // renderAllShapes();
@@ -117,8 +117,8 @@ function setUpAllEvents() {
     // Set up all canvas attributes
 
     document.getElementById('angleSlide').addEventListener('mousemove', function (ev) { if (ev.buttons) { g_globalAngle = this.value; renderAllShapes(); } });
-    document.getElementById('yellowSlide').addEventListener('mousemove', function (ev) { if (ev.buttons) { g_YellowAngle = this.value; renderAllShapes(); } });
-    document.getElementById('boxSlide').addEventListener('mousemove', function (ev) { if (ev.buttons) { g_magentaAngle = this.value; renderAllShapes(); } });
+    document.getElementById('yellowSlide').addEventListener('mousemove', function (ev) { if (ev.buttons) { g_headAngle = this.value; renderAllShapes(); } });
+    document.getElementById('boxSlide').addEventListener('mousemove', function (ev) { if (ev.buttons) { g_tailAngle = this.value; renderAllShapes(); } });
     document.getElementById('animateYellowButtonON').onclick = function () { doAnimation = true; tick(); };
 
     document.getElementById('animateYellowButtonOFF').onclick = function () { doAnimation = false; };
@@ -171,7 +171,7 @@ function coordsToWebGL(ev) {
 }
 function updateAnimationAngles() {
     if (doAnimation) {
-        g_YellowAngle = (45 * Math.sin(g_seconds));
+        g_headAngle = (45 * Math.sin(g_seconds));
     }
 }
 
@@ -184,30 +184,83 @@ function renderAllShapes() {
 
     var body = new Cube();
     body.color = [216 / 255, 222 / 255, 233 / 255, 1];
-    body.matrix.translate(-.5, -.3, 0.4);
-    var bodyCoordsMat = new Matrix4(body.matrix);
-    body.matrix.rotate(-5, 1, 0, 0);
+    body.matrix.translate(0, 0, 0);
     body.matrix.scale(.4, .4, .8);
     body.render();
 
-    var frontLeftLeg = new Cube();
-    frontLeftLeg.color = [0.5, 0.8, 0.8, 0.6];
-    frontLeftLeg.matrix = new Matrix4(bodyCoordsMat);
-    frontLeftLeg.matrix.rotate(-10, 1, 0, 0);
-    frontLeftLeg.matrix.rotate(-g_YellowAngle, 1, 0, 0);
-    frontLeftLeg.matrix.scale(.1, .4, .1);
-    frontLeftLeg.matrix.translate(-1, -.5, -4);
-    frontLeftLeg.render();
+    var tail = new Cube();
+    tail.color = [200 / 255, 200 / 255, 200 / 255, 1];
+    tail.matrix.set(body.matrix);
+    tail.matrix.scale(.33, .33, .5);
+    tail.matrix.translate(0, 0, 1.5);
+    tail.matrix.rotate(10, 1, 0, 0);
+    tail.matrix.rotate(-g_tailAngle, 1, 0, 0);
+    tail.render();
 
-    var frontRightLeg = new Cube();
-    frontRightLeg.color = [1, 1, 0, 1];
-    frontRightLeg.matrix = new Matrix4(bodyCoordsMat);
-    frontRightLeg.matrix.rotate(-10, 1, 0, 0);
-    frontRightLeg.matrix.rotate(-g_YellowAngle, 1, 0, 0);
-    frontRightLeg.matrix.scale(.1, .4, .1);
-    frontRightLeg.matrix.translate(1, -.5, -4);
-    frontRightLeg.render();
+    var mane = new Cube();
+    mane.color = [200 / 255, 200 / 255, 200 / 255, 1];
+    mane.matrix.set(body.matrix);
+    mane.matrix.scale(1.2, 1.2, .35);
+    mane.matrix.translate(0, 0, -1.5);
+    mane.matrix.rotate(45, 1, 0, 0);
+    mane.matrix.rotate(-g_headAngle, 1, 0, 0);
+    mane.render();
 
+    var head = new Cube();
+    head.color = [180 / 255, 180 / 255, 180 / 255, 1];
+    head.matrix.set(mane.matrix);
+    head.matrix.scale(.8, .8, .5);
+    head.matrix.translate(0, 0, -1.5);
+    head.render();
+
+    var snout = new Cube();
+    snout.color = [160 / 255, 160 / 255, 160 / 255, 1];
+    snout.matrix.set(head.matrix);
+    snout.matrix.scale(.5, .5, 1);
+    snout.matrix.translate(0, -0.5, -1);
+    snout.render();
+
+    var leftEar = new Cube();
+    leftEar.color = [160 / 255, 160 / 255, 160 / 255, 1];
+    leftEar.matrix.set(head.matrix);
+    leftEar.matrix.scale(.33, .5, .33);
+    leftEar.matrix.translate(-1, 1.125, 1);
+    leftEar.render();
+
+    var rightEar = new Cube();
+    rightEar.color = [160 / 255, 160 / 255, 160 / 255, 1];
+    rightEar.matrix.set(head.matrix);
+    rightEar.matrix.scale(.33, .5, .33);
+    rightEar.matrix.translate(1, 1.125, 1);
+    rightEar.render();
+
+    var leftIris = new Cube();
+    leftIris.color = [1, 1, 1, 1];
+    leftIris.matrix.set(head.matrix);
+    leftIris.matrix.scale(.33, .2, .33);
+    leftIris.matrix.translate(-1, .5, -1.5);
+    leftIris.render();
+
+    var rightIris = new Cube();
+    rightIris.color = [1, 1, 1, 1];
+    rightIris.matrix.set(head.matrix);
+    rightIris.matrix.scale(.33, .2, .33);
+    rightIris.matrix.translate(1, 0.5, -1.5);
+    rightIris.render();
+
+    var leftPupil = new Cube();
+    leftPupil.color = [0, 0, 0, 1];
+    leftPupil.matrix.set(leftIris.matrix);
+    leftPupil.matrix.scale(.5, 1, .5);
+    leftPupil.matrix.translate(.5, 0, -1);
+    leftPupil.render();
+
+    var rightPupil = new Cube();
+    rightPupil.color = [0, 0, 0, 1];
+    rightPupil.matrix.set(rightIris.matrix);
+    rightPupil.matrix.scale(.5, 1, .5);
+    rightPupil.matrix.translate(-.5, 0, -1);
+    rightPupil.render();
 
 }
 
