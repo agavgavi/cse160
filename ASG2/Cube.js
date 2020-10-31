@@ -9,18 +9,18 @@ class Cube {
     render() {
         var rgba = this.color;
         var verticies = new Float32Array([
-            0, 0, 0, 1, 1, 0, 1, 0, 0,
-            0, 0, 0, 0, 1, 0, 1, 1, 0,
-            0, 0, 1, 1, 1, 1, 1, 0, 1,
-            0, 0, 1, 0, 1, 1, 1, 1, 1,
-            0, 0, 0, 0, 1, 1, 0, 0, 1,
-            0, 0, 0, 0, 1, 0, 0, 1, 1,
-            1, 0, 0, 1, 1, 1, 1, 0, 1,
-            1, 0, 0, 1, 1, 0, 1, 1, 1,
-            0, 1, 0, 1, 1, 1, 1, 1, 0,
-            0, 1, 0, 0, 1, 1, 1, 1, 1,
-            0, 0, 0, 1, 0, 1, 1, 0, 0,
-            0, 0, 0, 0, 0, 1, 1, 0, 1
+            -0.5, -0.5, -0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5,
+            -0.5, -0.5, -0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5,
+            -0.5, -0.5, 0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5,
+            -0.5, -0.5, 0.5, -0.5, 0.5, 0.5, 0.5, 0.5, 0.5,
+            -0.5, -0.5, -0.5, -0.5, 0.5, 0.5, -0.5, -0.5, 0.5,
+            -0.5, -0.5, -0.5, -0.5, 0.5, -0.5, -0.5, 0.5, 0.5,
+            0.5, -0.5, -0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5,
+            0.5, -0.5, -0.5, 0.5, 0.5, -0.5, 0.5, 0.5, 0.5,
+            -0.5, 0.5, -0.5, 0.5, 0.5, 0.5, 0.5, 0.5, -0.5,
+            -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, 0.5, 0.5,
+            -0.5, -0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5, -0.5,
+            -0.5, -0.5, -0.5, -0.5, -0.5, 0.5, 0.5, -0.5, 0.5
         ]);
 
         var frontCol = getColorArray(rgba, 1);
@@ -36,8 +36,7 @@ class Cube {
 
 };
 
-function drawCube(vertices, matrix, color) {
-    var n = 36; // The number of vertices
+function drawCube(verticies, matrix, color) {
 
     // Create a buffer object
     var vertexBuffer = gl.createBuffer();
@@ -49,7 +48,7 @@ function drawCube(vertices, matrix, color) {
     // Bind the buffer object to target
     gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
     // Write date into the buffer object
-    gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
+    gl.bufferData(gl.ARRAY_BUFFER, verticies, gl.STATIC_DRAW);
     // Bind the buffer object to target
     gl.bindBuffer(gl.ARRAY_BUFFER, null);
 
@@ -70,14 +69,20 @@ function drawCube(vertices, matrix, color) {
     gl.enableVertexAttribArray(a_Position);
 
     gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
-    gl.vertexAttribPointer(a_Color, 3, gl.FLOAT, false, 0, 0);
+    gl.vertexAttribPointer(a_Color, 4, gl.FLOAT, false, 0, 0);
     gl.enableVertexAttribArray(a_Color);
     gl.uniformMatrix4fv(u_ModelMatrix, false, matrix.elements);
 
-    gl.drawArrays(gl.TRIANGLES, 0, n);
+    gl.drawArrays(gl.TRIANGLES, 0, verticies.length / 3);
 }
 
 function getColorArray(rgba, weight = 1) {
-    return [rgba[0] * weight, rgba[1] * weight, rgba[2] * weight, rgba[0] * weight, rgba[1] * weight, rgba[2] * weight, rgba[0] * weight, rgba[1] * weight, rgba[2] * weight,
-    rgba[0] * weight, rgba[1] * weight, rgba[2] * weight, rgba[0] * weight, rgba[1] * weight, rgba[2] * weight, rgba[0] * weight, rgba[1] * weight, rgba[2] * weight]
+    return [
+        rgba[0] * weight, rgba[1] * weight, rgba[2] * weight, rgba[3],
+        rgba[0] * weight, rgba[1] * weight, rgba[2] * weight, rgba[3],
+        rgba[0] * weight, rgba[1] * weight, rgba[2] * weight, rgba[3],
+        rgba[0] * weight, rgba[1] * weight, rgba[2] * weight, rgba[3],
+        rgba[0] * weight, rgba[1] * weight, rgba[2] * weight, rgba[3],
+        rgba[0] * weight, rgba[1] * weight, rgba[2] * weight, rgba[3],
+    ]
 } 

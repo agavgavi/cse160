@@ -28,7 +28,7 @@ let a_Color;
 let u_ModelMatrix;    // A GLSL uniform shader variable that allows the size to change.
 let u_GlobalRotateMatrix;
 
-let g_globalAngle = 0;
+let g_globalAngle = 45;
 let g_YellowAngle = 0;
 let g_magentaAngle = 0;
 
@@ -63,6 +63,9 @@ function setUpCanvas() {
 
     // Get the rendering context for WebGL
     gl = canvas.getContext("webgl" || "experimental-webgl", { preserveDrawingBuffer: true });
+    gl.enable(gl.BLEND)
+    gl.blendFuncSeparate(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA, gl.ONE,
+        gl.ONE_MINUS_SRC_ALPHA);
     if (!gl) {
         console.log('Failed to get the rendering context for WebGL');
         return;
@@ -180,30 +183,30 @@ function renderAllShapes() {
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
     var body = new Cube();
-    body.color = [1, 0, 0, 1];
-    body.matrix.translate(-.25, -.75, 0);
+    body.color = [216 / 255, 222 / 255, 233 / 255, 1];
+    body.matrix.translate(-.5, -.3, 0.4);
+    var bodyCoordsMat = new Matrix4(body.matrix);
     body.matrix.rotate(-5, 1, 0, 0);
-    body.matrix.scale(0.5, .3, .5);
+    body.matrix.scale(.4, .4, .8);
     body.render();
 
-    var leftArm = new Cube();
-    leftArm.color = [1, 1, 0, 1];
-    leftArm.matrix.setTranslate(0, -.5, 0);
-    leftArm.matrix.rotate(-5, 1, 0, 0);
-    leftArm.matrix.rotate(-g_YellowAngle, 0, 0, 1);
-    var yellowCoordsMat = new Matrix4(leftArm.matrix);
-    leftArm.matrix.scale(0.25, .7, .5);
-    leftArm.matrix.translate(-.5, 0, 0);
-    leftArm.render();
+    var frontLeftLeg = new Cube();
+    frontLeftLeg.color = [0.5, 0.8, 0.8, 0.6];
+    frontLeftLeg.matrix = new Matrix4(bodyCoordsMat);
+    frontLeftLeg.matrix.rotate(-10, 1, 0, 0);
+    frontLeftLeg.matrix.rotate(-g_YellowAngle, 1, 0, 0);
+    frontLeftLeg.matrix.scale(.1, .4, .1);
+    frontLeftLeg.matrix.translate(-1, -.5, -4);
+    frontLeftLeg.render();
 
-    var testBox = new Cube();
-    testBox.color = [1, 0, 1, 1];
-    testBox.matrix = yellowCoordsMat;
-    testBox.matrix.translate(0, 0.65, 0);
-    testBox.matrix.rotate(g_magentaAngle, 0, 0, 1);
-    testBox.matrix.scale(.3, .3, .3);
-    testBox.matrix.translate(-.5, 0, -0.001);
-    testBox.render();
+    var frontRightLeg = new Cube();
+    frontRightLeg.color = [1, 1, 0, 1];
+    frontRightLeg.matrix = new Matrix4(bodyCoordsMat);
+    frontRightLeg.matrix.rotate(-10, 1, 0, 0);
+    frontRightLeg.matrix.rotate(-g_YellowAngle, 1, 0, 0);
+    frontRightLeg.matrix.scale(.1, .4, .1);
+    frontRightLeg.matrix.translate(1, -.5, -4);
+    frontRightLeg.render();
 
 
 }
@@ -212,7 +215,6 @@ var g_startTime = performance.now() / 1000.0;
 var g_seconds = performance.now() / 1000.0 - g_startTime;
 function tick() {
     g_seconds = performance.now() / 1000.0 - g_startTime;
-    console.log(g_seconds);
 
     updateAnimationAngles();
     renderAllShapes();
