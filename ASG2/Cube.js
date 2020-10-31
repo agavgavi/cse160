@@ -1,14 +1,10 @@
 
 class Cube {
-    constructor() {
+    constructor(color_list = [1, 0, 0, 1]) {
         this.type = 'cube';
-        this.color = [1, 0, 0, 1];
+        this.color = color_list;
         this.matrix = new Matrix4();
-    }
-
-    render() {
-        var rgba = this.color;
-        var verticies = new Float32Array([
+        this.verticies = new Float32Array([
             -0.5, -0.5, -0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5,
             -0.5, -0.5, -0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5,
             -0.5, -0.5, 0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5,
@@ -22,16 +18,14 @@ class Cube {
             -0.5, -0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5, -0.5,
             -0.5, -0.5, -0.5, -0.5, -0.5, 0.5, 0.5, -0.5, 0.5
         ]);
+        this.colorArray = makeArray(this.color);
+    }
 
-        var frontCol = getColorArray(rgba, 1);
-        var backCol = getColorArray(rgba, 0.8);
-        var leftCol = getColorArray(rgba, 0.9);
-        var rightCol = getColorArray(rgba, 0.7);
-        var topCol = getColorArray(rgba, 0.95);
-        var bottomCol = getColorArray(rgba, 0.5);
+    render() {
 
-        var color = new Float32Array(frontCol.concat(backCol, leftCol, rightCol, topCol, bottomCol));
-        drawCube(verticies, this.matrix, color);
+
+
+        drawCube(this.verticies, this.matrix, this.colorArray);
     }
 
 };
@@ -75,7 +69,6 @@ function drawCube(verticies, matrix, color) {
 
     gl.drawArrays(gl.TRIANGLES, 0, verticies.length / 3);
 }
-
 function getColorArray(rgba, weight = 1) {
     return [
         rgba[0] * weight, rgba[1] * weight, rgba[2] * weight, rgba[3],
@@ -85,4 +78,15 @@ function getColorArray(rgba, weight = 1) {
         rgba[0] * weight, rgba[1] * weight, rgba[2] * weight, rgba[3],
         rgba[0] * weight, rgba[1] * weight, rgba[2] * weight, rgba[3],
     ]
-} 
+}
+
+
+function makeArray(color) {
+    var frontCol = getColorArray(color, 1);
+    var backCol = getColorArray(color, 0.8);
+    var leftCol = getColorArray(color, 0.9);
+    var rightCol = getColorArray(color, 0.7);
+    var topCol = getColorArray(color, 0.95);
+    var bottomCol = getColorArray(color, 0.5);
+    return new Float32Array(frontCol.concat(backCol, leftCol, rightCol, topCol, bottomCol));
+}

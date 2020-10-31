@@ -21,11 +21,20 @@
             </canvas>
             <p>
                 Animations:
-                <button id="animateYellowButtonON" class="button">ON</button>
-                <button id="animateYellowButtonOFF" class="button">OFF</button>
+                <button id="animateYellowButtonON" class="button is-small">ON</button>
+                <button id="animateYellowButtonOFF" class="button is-small">OFF</button>
             </p>
             <p>
-                Camera Angle: <input type="range" min=-180 max=180 value=0 id="angleSlide">
+                <button id="resetCam" class="button is-small">Reset Camera Angle</button>
+            </p>
+            <p>
+                X Camera Angle: <input type="range" min=-180 max=180 value=0 id="XangleSlide">
+            </p>
+            <p>
+                Y Camera Angle: <input type="range" min=-180 max=180 value=0 id="YangleSlide">
+            </p>
+            <p>
+                Z Camera Angle: <input type="range" min=-180 max=180 value=0 id="ZangleSlide">
             </p>
             <p>
                 Head Nodding: <input type="range" min=-12 max=12 value=0 id="headSlide">
