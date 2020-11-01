@@ -202,7 +202,7 @@ function coordsToWebGL(ev) {
 function updateAnimationAngles() {
     if (doAnimation) {
         g_headAngle = (12 * Math.sin(g_seconds));
-        g_tailAngle = (7 * Math.sin(g_seconds));
+        g_tailAngle = (10 * Math.sin(g_seconds * 3));
         g_earAngle = (7 * Math.cos(g_seconds));
         g_legAngle = (12 * Math.sin(g_seconds)) + 2;
     }
