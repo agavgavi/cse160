@@ -452,20 +452,20 @@ function renderAllShapes() {
 
     flToe1.matrix.setIdentity();
     flToe1.matrix.set(flFoot.matrix);
-    flToe1.matrix.scale(.33, 1, .33);
-    flToe1.matrix.translate(-1, -0.01, -1.9);
+    flToe1.matrix.scale(.33, .8, .33);
+    flToe1.matrix.translate(-1, -0.2, -1.9);
     flToe1.render();
 
     flToe2.matrix.setIdentity();
     flToe2.matrix.set(flFoot.matrix);
-    flToe2.matrix.scale(.33, 1, .33);
-    flToe2.matrix.translate(0, -0.01, -1.7);
+    flToe2.matrix.scale(.33, .8, .33);
+    flToe2.matrix.translate(0, -0.2, -1.7);
     flToe2.render();
 
     flToe3.matrix.setIdentity();
     flToe3.matrix.set(flFoot.matrix);
-    flToe3.matrix.scale(.33, 1, .33);
-    flToe3.matrix.translate(1, -0.01, -1.9);
+    flToe3.matrix.scale(.33, .8, .33);
+    flToe3.matrix.translate(1, -0.2, -1.9);
     flToe3.render();
 
     frLeg.matrix.setIdentity();
@@ -483,20 +483,20 @@ function renderAllShapes() {
 
     frToe1.matrix.setIdentity();
     frToe1.matrix.set(frFoot.matrix);
-    frToe1.matrix.scale(.33, 1, .33);
-    frToe1.matrix.translate(-1, -0.01, -1.9);
+    frToe1.matrix.scale(.33, .8, .33);
+    frToe1.matrix.translate(-1, -0.2, -1.9);
     frToe1.render();
 
     frToe2.matrix.setIdentity();
     frToe2.matrix.set(frFoot.matrix);
-    frToe2.matrix.scale(.33, 1, .33);
-    frToe2.matrix.translate(0, -0.01, -1.7);
+    frToe2.matrix.scale(.33, .8, .33);
+    frToe2.matrix.translate(0, -0.2, -1.7);
     frToe2.render();
 
     frToe3.matrix.setIdentity();
     frToe3.matrix.set(frFoot.matrix);
-    frToe3.matrix.scale(.33, 1, .33);
-    frToe3.matrix.translate(1, -0.01, -1.9);
+    frToe3.matrix.scale(.33, .8, .33);
+    frToe3.matrix.translate(1, -0.2, -1.9);
     frToe3.render();
 
     blLeg.matrix.setIdentity();
@@ -514,20 +514,20 @@ function renderAllShapes() {
 
     blToe1.matrix.setIdentity();
     blToe1.matrix.set(blFoot.matrix);
-    blToe1.matrix.scale(.33, 1, .33);
-    blToe1.matrix.translate(-1, -0.01, -1.9);
+    blToe1.matrix.scale(.33, .8, .33);
+    blToe1.matrix.translate(-1, -0.2, -1.9);
     blToe1.render();
 
     blToe2.matrix.setIdentity();
     blToe2.matrix.set(blFoot.matrix);
-    blToe2.matrix.scale(.33, 1, .33);
-    blToe2.matrix.translate(0, -0.01, -1.7);
+    blToe2.matrix.scale(.33, .8, .33);
+    blToe2.matrix.translate(0, -0.2, -1.7);
     blToe2.render();
 
     blToe3.matrix.setIdentity();
     blToe3.matrix.set(blFoot.matrix);
-    blToe3.matrix.scale(.33, 1, .33);
-    blToe3.matrix.translate(1, -0.01, -1.9);
+    blToe3.matrix.scale(.33, .8, .33);
+    blToe3.matrix.translate(1, -0.2, -1.9);
     blToe3.render();
 
     brLeg.matrix.setIdentity();
@@ -545,20 +545,20 @@ function renderAllShapes() {
 
     brToe1.matrix.setIdentity();
     brToe1.matrix.set(brFoot.matrix);
-    brToe1.matrix.scale(.33, 1, .33);
-    brToe1.matrix.translate(-1, -0.01, -1.9);
+    brToe1.matrix.scale(.33, .8, .33);
+    brToe1.matrix.translate(-1, -0.2, -1.9);
     brToe1.render();
 
     brToe2.matrix.setIdentity();
     brToe2.matrix.set(brFoot.matrix);
-    brToe2.matrix.scale(.33, 1, .33);
-    brToe2.matrix.translate(0, -0.01, -1.7);
+    brToe2.matrix.scale(.33, .8, .33);
+    brToe2.matrix.translate(0, -0.2, -1.7);
     brToe2.render();
 
     brToe3.matrix.setIdentity();
     brToe3.matrix.set(brFoot.matrix);
-    brToe3.matrix.scale(.33, 1, .33);
-    brToe3.matrix.translate(1, -0.01, -1.9);
+    brToe3.matrix.scale(.33, .8, .33);
+    brToe3.matrix.translate(1, -0.2, -1.9);
     brToe3.render();
 
     boneMid.matrix.setIdentity();
