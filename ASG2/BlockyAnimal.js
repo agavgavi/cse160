@@ -96,7 +96,7 @@ function initAllShaders() {
 
     // Get the storage location of a_Color
     a_Color = gl.getAttribLocation(gl.program, 'a_Color');
-    if (!a_Color) {
+    if (a_Color < 0) {
         console.log('Failed to get the storage location of a_Color');
         return;
     }
@@ -350,26 +350,26 @@ function renderAllShapes() {
 
     mouth.matrix.setIdentity();
     mouth.matrix.set(head.matrix);
-    mouth.matrix.scale(1.021, .5, 1);
-    mouth.matrix.translate(0, -.5001, -0.001);
+    mouth.matrix.scale(1.021, .5001, 1);
+    mouth.matrix.translate(0, -.5005, -0.002);
     mouth.render();
 
     snout.matrix.setIdentity();
     snout.matrix.set(head.matrix);
-    snout.matrix.scale(.5, .5, 1);
-    snout.matrix.translate(0, -0.5, -1);
+    snout.matrix.scale(.5001, .5001, 1);
+    snout.matrix.translate(0, -0.5005, -1.0002);
     snout.render();
 
     nose.matrix.setIdentity();
     nose.matrix.set(snout.matrix);
-    nose.matrix.scale(.5, .5, .5);
+    nose.matrix.scale(.5001, .5001, .5001);
     nose.matrix.translate(0, .52, -.65);
     nose.render();
 
     jaw.matrix.setIdentity();
     jaw.matrix.set(snout.matrix);
-    jaw.matrix.scale(1.001, .3001, 1.001);
-    jaw.matrix.translate(0, -1, 0);
+    jaw.matrix.scale(1.003, .3001, 1.003);
+    jaw.matrix.translate(0, -1.005, 0);
     jaw.render();
 
 
@@ -427,13 +427,13 @@ function renderAllShapes() {
 
     leftPupil.matrix.setIdentity();
     leftPupil.matrix.set(leftIris.matrix);
-    leftPupil.matrix.scale(.5, 1, .5);
+    leftPupil.matrix.scale(.503, 1.003, .503);
     leftPupil.matrix.translate(.5, 0, -1);
     leftPupil.render();
 
     rightPupil.matrix.setIdentity();
     rightPupil.matrix.set(rightIris.matrix);
-    rightPupil.matrix.scale(.5, 1, .5);
+    rightPupil.matrix.scale(.503, 1.003, .503);
     rightPupil.matrix.translate(-.5, 0, -1);
     rightPupil.render();
 
@@ -605,10 +605,6 @@ function renderAllShapes() {
         eyebrowL.render();
         eyebrowR.render();
     }
-
-
-
-
 }
 
 var g_startTime = performance.now() / 1000.0;
