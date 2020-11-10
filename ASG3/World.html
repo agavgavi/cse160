@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Andrew Gavgavian's Assignment 3 For CSE160</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+    <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
+</head>
+
+<body onload="main()">
+    <section class="section">
+        <div class="container">
+            <h1 class="title">
+                Andrew Gavgavian's Assignment 3 For CSE160
+            </h1>
+
+            <canvas id="webgl" width="400" height="400">
+                Please use a browser that supports "canvas"
+            </canvas>
+            <div class="columns is-half">
+                <div class="column">
+                    <p class="is-size-3">Camera Options:</p>
+                    <div class="buttons">
+                        <button id="resetCam" class="button is-info">Reset Camera Angle</button>
+                    </div>
+                    <div>
+                        X-Axis Rotation Camera Angle: <input type="range" min=-180 max=180 value=0 id="XangleSlide">
+                    </div>
+                    <div>
+                        Y-Axis Rotation Camera Angle: <input type="range" min=-180 max=180 value=45 id="YangleSlide">
+                    </div>
+                    <div>
+                        Z-Axis Rotation Camera Angle: <input type="range" min=-180 max=180 value=0 id="ZangleSlide">
+                    </div>
+
+                </div>
+            </div>
+
+
+        </div>
+    </section>
+    <script src="lib/webgl-utils.js"></script>
+    <script src="lib/webgl-debug.js"></script>
+    <script src="lib/cuon-utils.js"></script>
+    <script src="lib/cuon-matrix-cse160.js"></script>
+    <script src="Cube.js"></script>
+    <script src="World.js"></script>
+</body>
+
+</html>
