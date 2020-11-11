@@ -1,92 +1,99 @@
-
 class Cube {
     constructor(color_list = [1, 0, 0, 1]) {
         this.type = 'cube';
         this.color = color_list;
         this.matrix = new Matrix4();
+        this.textureNum = -2;
+
+        // Break down of information per line
+        // 0-2: XYZ
+        // 3-4: UV
+        // 5-8: RGBA
         this.verticies = new Float32Array([
-            -0.5, -0.5, -0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5,
-            -0.5, -0.5, -0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5,
-            -0.5, -0.5, 0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5,
-            -0.5, -0.5, 0.5, -0.5, 0.5, 0.5, 0.5, 0.5, 0.5,
-            -0.5, -0.5, -0.5, -0.5, 0.5, 0.5, -0.5, -0.5, 0.5,
-            -0.5, -0.5, -0.5, -0.5, 0.5, -0.5, -0.5, 0.5, 0.5,
-            0.5, -0.5, -0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5,
-            0.5, -0.5, -0.5, 0.5, 0.5, -0.5, 0.5, 0.5, 0.5,
-            -0.5, 0.5, -0.5, 0.5, 0.5, 0.5, 0.5, 0.5, -0.5,
-            -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, 0.5, 0.5,
-            -0.5, -0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5, -0.5,
-            -0.5, -0.5, -0.5, -0.5, -0.5, 0.5, 0.5, -0.5, 0.5
+            // Front 
+            -0.5, -0.5, -0.5, 0, 0, this.color[0] * 1, this.color[1] * 1, this.color[2] * 1, this.color[3],
+            0.5, 0.5, -0.5, 1, 1, this.color[0] * 1, this.color[1] * 1, this.color[2] * 1, this.color[3],
+            0.5, -0.5, -0.5, 1, 0, this.color[0] * 1, this.color[1] * 1, this.color[2] * 1, this.color[3],
+            -0.5, -0.5, -0.5, 0, 0, this.color[0] * 1, this.color[1] * 1, this.color[2] * 1, this.color[3],
+            -0.5, 0.5, -0.5, 0, 1, this.color[0] * 1, this.color[1] * 1, this.color[2] * 1, this.color[3],
+            0.5, 0.5, -0.5, 1, 1, this.color[0] * 1, this.color[1] * 1, this.color[2] * 1, this.color[3],
+            // Back
+            -0.5, -0.5, 0.5, 0, 0, this.color[0] * 0.8, this.color[1] * 0.8, this.color[2] * 0.8, this.color[3],
+            0.5, 0.5, 0.5, 1, 1, this.color[0] * 0.8, this.color[1] * 0.8, this.color[2] * 0.8, this.color[3],
+            0.5, -0.5, 0.5, 1, 0, this.color[0] * 0.8, this.color[1] * 0.8, this.color[2] * 0.8, this.color[3],
+            -0.5, -0.5, 0.5, 0, 0, this.color[0] * 0.8, this.color[1] * 0.8, this.color[2] * 0.8, this.color[3],
+            -0.5, 0.5, 0.5, 0, 1, this.color[0] * 0.8, this.color[1] * 0.8, this.color[2] * 0.8, this.color[3],
+            0.5, 0.5, 0.5, 1, 1, this.color[0] * 0.8, this.color[1] * 0.8, this.color[2] * 0.8, this.color[3],
+            // Left
+            -0.5, -0.5, -0.5, 0, 0, this.color[0] * 0.9, this.color[1] * 0.9, this.color[2] * 0.9, this.color[3],
+            -0.5, 0.5, 0.5, 1, 1, this.color[0] * 0.9, this.color[1] * 0.9, this.color[2] * 0.9, this.color[3],
+            -0.5, -0.5, 0.5, 1, 0, this.color[0] * 0.9, this.color[1] * 0.9, this.color[2] * 0.9, this.color[3],
+            -0.5, -0.5, -0.5, 0, 0, this.color[0] * 0.9, this.color[1] * 0.9, this.color[2] * 0.9, this.color[3],
+            -0.5, 0.5, -0.5, 0, 1, this.color[0] * 0.9, this.color[1] * 0.9, this.color[2] * 0.9, this.color[3],
+            -0.5, 0.5, 0.5, 1, 1, this.color[0] * 0.9, this.color[1] * 0.9, this.color[2] * 0.9, this.color[3],
+            // Right
+            0.5, -0.5, -0.5, 0, 0, this.color[0] * 0.7, this.color[1] * 0.7, this.color[2] * 0.7, this.color[3],
+            0.5, 0.5, 0.5, 1, 1, this.color[0] * 0.7, this.color[1] * 0.7, this.color[2] * 0.7, this.color[3],
+            0.5, -0.5, 0.5, 1, 0, this.color[0] * 0.7, this.color[1] * 0.7, this.color[2] * 0.7, this.color[3],
+            0.5, -0.5, -0.5, 0, 0, this.color[0] * 0.7, this.color[1] * 0.7, this.color[2] * 0.7, this.color[3],
+            0.5, 0.5, -0.5, 0, 1, this.color[0] * 0.7, this.color[1] * 0.7, this.color[2] * 0.7, this.color[3],
+            0.5, 0.5, 0.5, 1, 1, this.color[0] * 0.7, this.color[1] * 0.7, this.color[2] * 0.7, this.color[3],
+            // Top
+            -0.5, 0.5, -0.5, 0, 0, this.color[0] * 0.95, this.color[1] * 0.95, this.color[2] * 0.95, this.color[3],
+            0.5, 0.5, 0.5, 1, 1, this.color[0] * 0.95, this.color[1] * 0.95, this.color[2] * 0.95, this.color[3],
+            0.5, 0.5, -0.5, 1, 0, this.color[0] * 0.95, this.color[1] * 0.95, this.color[2] * 0.95, this.color[3],
+            -0.5, 0.5, -0.5, 0, 0, this.color[0] * 0.95, this.color[1] * 0.95, this.color[2] * 0.95, this.color[3],
+            -0.5, 0.5, 0.5, 0, 1, this.color[0] * 0.95, this.color[1] * 0.95, this.color[2] * 0.95, this.color[3],
+            0.5, 0.5, 0.5, 1, 1, this.color[0] * 0.95, this.color[1] * 0.95, this.color[2] * 0.95, this.color[3],
+            // Bottom
+            -0.5, -0.5, -0.5, 0, 0, this.color[0] * 0.5, this.color[1] * 0.5, this.color[2] * 0.5, this.color[3],
+            0.5, -0.5, 0.5, 1, 1, this.color[0] * 0.5, this.color[1] * 0.5, this.color[2] * 0.5, this.color[3],
+            0.5, -0.5, -0.5, 1, 0, this.color[0] * 0.5, this.color[1] * 0.5, this.color[2] * 0.5, this.color[3],
+            -0.5, -0.5, -0.5, 0, 0, this.color[0] * 0.5, this.color[1] * 0.5, this.color[2] * 0.5, this.color[3],
+            -0.5, -0.5, 0.5, 0, 1, this.color[0] * 0.5, this.color[1] * 0.5, this.color[2] * 0.5, this.color[3],
+            0.5, -0.5, 0.5, 1, 1, this.color[0] * 0.5, this.color[1] * 0.5, this.color[2] * 0.5, this.color[3]
         ]);
-        this.colorArray = makeArray(this.color);
     }
 
     render() {
-
-
-
-        drawCube(this.verticies, this.matrix, this.colorArray);
+        drawCube(this.verticies, this.matrix, this.textureNum);
     }
 
 };
+var vertexBuffer = null;
+function drawCube(verticies, matrix, texNum) {
 
-function drawCube(verticies, matrix, color) {
+    if (vertexBuffer == null) {
+        initCubeBuffer();
+    }
+
+    gl.bufferData(gl.ARRAY_BUFFER, verticies, gl.STATIC_DRAW);
+    gl.uniform1i(u_whichTexture, texNum);
+    gl.uniformMatrix4fv(u_ModelMatrix, false, matrix.elements);
+
+    gl.drawArrays(gl.TRIANGLES, 0, verticies.length / 9);
+}
+
+function initCubeBuffer() {
 
     // Create a buffer object
-    var vertexBuffer = gl.createBuffer();
+    vertexBuffer = gl.createBuffer();
     if (!vertexBuffer) {
         console.log('Failed to create the buffer object');
         return -1;
     }
 
+    let FLOAT_SIZE = Float32Array.BYTES_PER_ELEMENT;
     // Bind the buffer object to target
     gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
-    // Write date into the buffer object
-    gl.bufferData(gl.ARRAY_BUFFER, verticies, gl.STATIC_DRAW);
-    // Bind the buffer object to target
-    gl.bindBuffer(gl.ARRAY_BUFFER, null);
 
 
-    // Create a buffer object
-    var colorBuffer = gl.createBuffer();
-    if (!colorBuffer) {
-        console.log('Failed to create the ColorBuffer object');
-        return -1;
-    }
-    gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
-    // Write date into the buffer object
-    gl.bufferData(gl.ARRAY_BUFFER, color, gl.STATIC_DRAW);
-
-    // Assign the buffer object to a_Position variable
-    gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
-    gl.vertexAttribPointer(a_Position, 3, gl.FLOAT, false, 0, 0);
+    gl.vertexAttribPointer(a_Position, 3, gl.FLOAT, false, 9 * FLOAT_SIZE, 0);
     gl.enableVertexAttribArray(a_Position);
 
-    gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
-    gl.vertexAttribPointer(a_Color, 4, gl.FLOAT, false, 0, 0);
+    gl.vertexAttribPointer(a_UV, 2, gl.FLOAT, false, 9 * FLOAT_SIZE, 3 * FLOAT_SIZE);
+    gl.enableVertexAttribArray(a_UV);
+
+    gl.vertexAttribPointer(a_Color, 4, gl.FLOAT, false, 9 * FLOAT_SIZE, 5 * FLOAT_SIZE);
     gl.enableVertexAttribArray(a_Color);
-    gl.uniformMatrix4fv(u_ModelMatrix, false, matrix.elements);
-
-    gl.drawArrays(gl.TRIANGLES, 0, verticies.length / 3);
-}
-function getColorArray(rgba, weight = 1) {
-    return [
-        rgba[0] * weight, rgba[1] * weight, rgba[2] * weight, rgba[3],
-        rgba[0] * weight, rgba[1] * weight, rgba[2] * weight, rgba[3],
-        rgba[0] * weight, rgba[1] * weight, rgba[2] * weight, rgba[3],
-        rgba[0] * weight, rgba[1] * weight, rgba[2] * weight, rgba[3],
-        rgba[0] * weight, rgba[1] * weight, rgba[2] * weight, rgba[3],
-        rgba[0] * weight, rgba[1] * weight, rgba[2] * weight, rgba[3],
-    ]
-}
-
-
-function makeArray(color) {
-    var frontCol = getColorArray(color, 1);
-    var backCol = getColorArray(color, 0.8);
-    var leftCol = getColorArray(color, 0.9);
-    var rightCol = getColorArray(color, 0.7);
-    var topCol = getColorArray(color, 0.95);
-    var bottomCol = getColorArray(color, 0.5);
-    return new Float32Array(frontCol.concat(backCol, leftCol, rightCol, topCol, bottomCol));
 }

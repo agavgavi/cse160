@@ -624,36 +624,36 @@ function toggleAnger(leftPupil, leftIris, rightPupil, rightIris) {
     if (isAngry == false) {
         if (leftPupil.color != rgbaList(13, 14, 16)) {
             leftPupil.color = rgbaList(13, 14, 16);
-            leftPupil.colorArray = makeArray(leftPupil.color);
+            leftPupil.verticies = makeArray(leftPupil.color);
         }
         if (leftIris.color != rgbaList(184, 184, 184)) {
             leftIris.color = rgbaList(184, 184, 184);
-            leftIris.colorArray = makeArray(leftIris.color);
+            leftIris.verticies = makeArray(leftIris.color);
         }
         if (rightPupil.color != rgbaList(13, 14, 16)) {
             rightPupil.color = rgbaList(13, 14, 16);
-            rightPupil.colorArray = makeArray(rightPupil.color);
+            rightPupil.verticies = makeArray(rightPupil.color);
         }
         if (rightIris.color != rgbaList(184, 184, 184)) {
             rightIris.color = rgbaList(184, 184, 184);
-            rightIris.colorArray = makeArray(rightIris.color);
+            rightIris.verticies = makeArray(rightIris.color);
         }
     } else {
         if (leftPupil.color != rgbaList(228, 46, 46)) {
             leftPupil.color = rgbaList(228, 46, 46);
-            leftPupil.colorArray = makeArray(leftPupil.color);
+            leftPupil.verticies = makeArray(leftPupil.color);
         }
         if (leftIris.color != rgbaList(150, 11, 11)) {
             leftIris.color = rgbaList(150, 11, 11);
-            leftIris.colorArray = makeArray(leftIris.color);
+            leftIris.verticies = makeArray(leftIris.color);
         }
         if (rightPupil.color != rgbaList(228, 46, 46)) {
             rightPupil.color = rgbaList(228, 46, 46);
-            rightPupil.colorArray = makeArray(rightPupil.color);
+            rightPupil.verticies = makeArray(rightPupil.color);
         }
         if (rightIris.color != rgbaList(150, 11, 11)) {
             rightIris.color = rgbaList(150, 11, 11);
-            rightIris.colorArray = makeArray(rightIris.color);
+            rightIris.verticies = makeArray(rightIris.color);
         }
     }
 

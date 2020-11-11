@@ -831,6 +831,10 @@ class Matrix4 {
         return this.translate(-eyeX, -eyeY, -eyeZ);
     };
 
+    setLookAtV3(eye, center, up) {
+        return this.setLookAt(eye.elements[0], eye.elements[1], eye.elements[2], center.elements[0], center.elements[1], center.elements[2], up.elements[0], up.elements[1], up.elements[2]);
+    };
+
     /**
      * Multiply the viewing matrix from the right.
      * @param eyeX, eyeY, eyeZ The position of the eye point.
