@@ -9,50 +9,7 @@ class Cube {
         // 0-2: XYZ
         // 3-4: UV
         // 5-8: RGBA
-        this.verticies = new Float32Array([
-            // Front 
-            -0.5, -0.5, -0.5, 0, 0, this.color[0] * 1, this.color[1] * 1, this.color[2] * 1, this.color[3],
-            0.5, 0.5, -0.5, 1, 1, this.color[0] * 1, this.color[1] * 1, this.color[2] * 1, this.color[3],
-            0.5, -0.5, -0.5, 1, 0, this.color[0] * 1, this.color[1] * 1, this.color[2] * 1, this.color[3],
-            -0.5, -0.5, -0.5, 0, 0, this.color[0] * 1, this.color[1] * 1, this.color[2] * 1, this.color[3],
-            -0.5, 0.5, -0.5, 0, 1, this.color[0] * 1, this.color[1] * 1, this.color[2] * 1, this.color[3],
-            0.5, 0.5, -0.5, 1, 1, this.color[0] * 1, this.color[1] * 1, this.color[2] * 1, this.color[3],
-            // Back
-            -0.5, -0.5, 0.5, 0, 0, this.color[0] * 0.8, this.color[1] * 0.8, this.color[2] * 0.8, this.color[3],
-            0.5, 0.5, 0.5, 1, 1, this.color[0] * 0.8, this.color[1] * 0.8, this.color[2] * 0.8, this.color[3],
-            0.5, -0.5, 0.5, 1, 0, this.color[0] * 0.8, this.color[1] * 0.8, this.color[2] * 0.8, this.color[3],
-            -0.5, -0.5, 0.5, 0, 0, this.color[0] * 0.8, this.color[1] * 0.8, this.color[2] * 0.8, this.color[3],
-            -0.5, 0.5, 0.5, 0, 1, this.color[0] * 0.8, this.color[1] * 0.8, this.color[2] * 0.8, this.color[3],
-            0.5, 0.5, 0.5, 1, 1, this.color[0] * 0.8, this.color[1] * 0.8, this.color[2] * 0.8, this.color[3],
-            // Left
-            -0.5, -0.5, -0.5, 0, 0, this.color[0] * 0.9, this.color[1] * 0.9, this.color[2] * 0.9, this.color[3],
-            -0.5, 0.5, 0.5, 1, 1, this.color[0] * 0.9, this.color[1] * 0.9, this.color[2] * 0.9, this.color[3],
-            -0.5, -0.5, 0.5, 1, 0, this.color[0] * 0.9, this.color[1] * 0.9, this.color[2] * 0.9, this.color[3],
-            -0.5, -0.5, -0.5, 0, 0, this.color[0] * 0.9, this.color[1] * 0.9, this.color[2] * 0.9, this.color[3],
-            -0.5, 0.5, -0.5, 0, 1, this.color[0] * 0.9, this.color[1] * 0.9, this.color[2] * 0.9, this.color[3],
-            -0.5, 0.5, 0.5, 1, 1, this.color[0] * 0.9, this.color[1] * 0.9, this.color[2] * 0.9, this.color[3],
-            // Right
-            0.5, -0.5, -0.5, 0, 0, this.color[0] * 0.7, this.color[1] * 0.7, this.color[2] * 0.7, this.color[3],
-            0.5, 0.5, 0.5, 1, 1, this.color[0] * 0.7, this.color[1] * 0.7, this.color[2] * 0.7, this.color[3],
-            0.5, -0.5, 0.5, 1, 0, this.color[0] * 0.7, this.color[1] * 0.7, this.color[2] * 0.7, this.color[3],
-            0.5, -0.5, -0.5, 0, 0, this.color[0] * 0.7, this.color[1] * 0.7, this.color[2] * 0.7, this.color[3],
-            0.5, 0.5, -0.5, 0, 1, this.color[0] * 0.7, this.color[1] * 0.7, this.color[2] * 0.7, this.color[3],
-            0.5, 0.5, 0.5, 1, 1, this.color[0] * 0.7, this.color[1] * 0.7, this.color[2] * 0.7, this.color[3],
-            // Top
-            -0.5, 0.5, -0.5, 0, 0, this.color[0] * 0.95, this.color[1] * 0.95, this.color[2] * 0.95, this.color[3],
-            0.5, 0.5, 0.5, 1, 1, this.color[0] * 0.95, this.color[1] * 0.95, this.color[2] * 0.95, this.color[3],
-            0.5, 0.5, -0.5, 1, 0, this.color[0] * 0.95, this.color[1] * 0.95, this.color[2] * 0.95, this.color[3],
-            -0.5, 0.5, -0.5, 0, 0, this.color[0] * 0.95, this.color[1] * 0.95, this.color[2] * 0.95, this.color[3],
-            -0.5, 0.5, 0.5, 0, 1, this.color[0] * 0.95, this.color[1] * 0.95, this.color[2] * 0.95, this.color[3],
-            0.5, 0.5, 0.5, 1, 1, this.color[0] * 0.95, this.color[1] * 0.95, this.color[2] * 0.95, this.color[3],
-            // Bottom
-            -0.5, -0.5, -0.5, 0, 0, this.color[0] * 0.5, this.color[1] * 0.5, this.color[2] * 0.5, this.color[3],
-            0.5, -0.5, 0.5, 1, 1, this.color[0] * 0.5, this.color[1] * 0.5, this.color[2] * 0.5, this.color[3],
-            0.5, -0.5, -0.5, 1, 0, this.color[0] * 0.5, this.color[1] * 0.5, this.color[2] * 0.5, this.color[3],
-            -0.5, -0.5, -0.5, 0, 0, this.color[0] * 0.5, this.color[1] * 0.5, this.color[2] * 0.5, this.color[3],
-            -0.5, -0.5, 0.5, 0, 1, this.color[0] * 0.5, this.color[1] * 0.5, this.color[2] * 0.5, this.color[3],
-            0.5, -0.5, 0.5, 1, 1, this.color[0] * 0.5, this.color[1] * 0.5, this.color[2] * 0.5, this.color[3]
-        ]);
+        this.verticies = generateVerticies(this.color);
     }
 
     render() {
@@ -96,4 +53,56 @@ function initCubeBuffer() {
 
     gl.vertexAttribPointer(a_Color, 4, gl.FLOAT, false, 9 * FLOAT_SIZE, 5 * FLOAT_SIZE);
     gl.enableVertexAttribArray(a_Color);
+}
+
+function generateVerticies(color) {
+    // Break down of information per line
+    // 0-2: XYZ
+    // 3-4: UV
+    // 5-8: RGBA
+    let verticies = new Float32Array([
+        // Front 
+        -0.5, -0.5, -0.5, 0, 0, color[0], color[1], color[2], color[3],
+        0.5, 0.5, -0.5, 1, 1, color[0], color[1], color[2], color[3],
+        0.5, -0.5, -0.5, 1, 0, color[0], color[1], color[2], color[3],
+        -0.5, -0.5, -0.5, 0, 0, color[0], color[1], color[2], color[3],
+        -0.5, 0.5, -0.5, 0, 1, color[0], color[1], color[2], color[3],
+        0.5, 0.5, -0.5, 1, 1, color[0], color[1], color[2], color[3],
+        // Back
+        -0.5, -0.5, 0.5, 0, 0, color[0], color[1], color[2], color[3],
+        0.5, 0.5, 0.5, 1, 1, color[0], color[1], color[2], color[3],
+        0.5, -0.5, 0.5, 1, 0, color[0], color[1], color[2], color[3],
+        -0.5, -0.5, 0.5, 0, 0, color[0], color[1], color[2], color[3],
+        -0.5, 0.5, 0.5, 0, 1, color[0], color[1], color[2], color[3],
+        0.5, 0.5, 0.5, 1, 1, color[0], color[1], color[2], color[3],
+        // Left
+        -0.5, -0.5, -0.5, 0, 0, color[0], color[1], color[2], color[3],
+        -0.5, 0.5, 0.5, 1, 1, color[0], color[1], color[2], color[3],
+        -0.5, -0.5, 0.5, 1, 0, color[0], color[1], color[2], color[3],
+        -0.5, -0.5, -0.5, 0, 0, color[0], color[1], color[2], color[3],
+        -0.5, 0.5, -0.5, 0, 1, color[0], color[1], color[2], color[3],
+        -0.5, 0.5, 0.5, 1, 1, color[0], color[1], color[2], color[3],
+        // Right
+        0.5, -0.5, -0.5, 0, 0, color[0], color[1], color[2], color[3],
+        0.5, 0.5, 0.5, 1, 1, color[0], color[1], color[2], color[3],
+        0.5, -0.5, 0.5, 1, 0, color[0], color[1], color[2], color[3],
+        0.5, -0.5, -0.5, 0, 0, color[0], color[1], color[2], color[3],
+        0.5, 0.5, -0.5, 0, 1, color[0], color[1], color[2], color[3],
+        0.5, 0.5, 0.5, 1, 1, color[0], color[1], color[2], color[3],
+        // Top
+        -0.5, 0.5, -0.5, 0, 0, color[0], color[1], color[2], color[3],
+        0.5, 0.5, 0.5, 1, 1, color[0], color[1], color[2], color[3],
+        0.5, 0.5, -0.5, 1, 0, color[0], color[1], color[2], color[3],
+        -0.5, 0.5, -0.5, 0, 0, color[0], color[1], color[2], color[3],
+        -0.5, 0.5, 0.5, 0, 1, color[0], color[1], color[2], color[3],
+        0.5, 0.5, 0.5, 1, 1, color[0], color[1], color[2], color[3],
+        // Bottom
+        -0.5, -0.5, -0.5, 0, 0, color[0], color[1], color[2], color[3],
+        0.5, -0.5, 0.5, 1, 1, color[0], color[1], color[2], color[3],
+        0.5, -0.5, -0.5, 1, 0, color[0], color[1], color[2], color[3],
+        -0.5, -0.5, -0.5, 0, 0, color[0], color[1], color[2], color[3],
+        -0.5, -0.5, 0.5, 0, 1, color[0], color[1], color[2], color[3],
+        0.5, -0.5, 0.5, 1, 1, color[0], color[1], color[2], color[3]
+    ]);
+    return verticies;
 }
