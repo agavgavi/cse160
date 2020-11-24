@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Andrew Gavgavian's Assignment 3 For CSE160</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+    <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
+</head>
+
+<body onload="main()">
+    <section class="section">
+        <div class="container">
+            <h1 class="title">
+                Andrew Gavgavian's Assignment 3 For CSE160 (Moon maze)
+            </h1>
+
+            <canvas id="webgl" width="600" height="600">
+                Please use a browser that supports "canvas"
+            </canvas>
+            <div class="columns is-half">
+                <div class="column">
+                    <p id='fps'></p>
+                </div>
+                <div class="column">
+                    <p><span class="subtitle">Cool features:</span>
+                    <ul>
+                        <li> Movable camera with mouse</li>
+                        <li>Go higher/lower with shift/space</li>
+                        <li> Multiple textures</li>
+                        <li>Crippling Inefficency that I can't solve</li>
+                    </ul>
+                    </p>
+                </div>
+            </div>
+
+
+        </div>
+    </section>
+    <script src="lib/webgl-utils.js"></script>
+    <script src="lib/webgl-debug.js"></script>
+    <script src="lib/cuon-utils.js"></script>
+    <script src="lib/cuon-matrix-cse160.js"></script>
+    <script src="Camera.js"></script>
+    <script src="Cube.js"></script>
+    <script src="World.js"></script>
+</body>
+
+</html>
