@@ -21,7 +21,23 @@
             </canvas>
             <div class="columns is-half">
                 <div class="column">
+                    <p class="is-size-3">Options:</p>
                     <p id='fps'></p>
+                    <div class="buttons">
+                        <button class="button is-info" id="lightOn">Activate Light</button>
+                        <button class="button is-success" id="lightOff">Deactivate Light</button>
+                        <button class="button is-info" id="normalOn">Activate Normal</button>
+                        <button class="button is-success" id="normalOff">Deactivate Normal</button>
+                    </div>
+                    <div>
+                        X-Axis Light Angle: <input type="range" min=-640 max=640 value=0 id="lightSlideX">
+                    </div>
+                    <div>
+                        Y-Axis Light Angle: <input type="range" min=-640 max=640 value=320 id="lightSlideY">
+                    </div>
+                    <div>
+                        Z-Axis Light Angle: <input type="range" min=-640 max=640 value=-20 id="lightSlideZ">
+                    </div>
                 </div>
                 <div class="column">
                     <p><span class="subtitle">Cool features:</span>

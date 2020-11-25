@@ -4,6 +4,7 @@ class Sphere {
         this.color = color_list;
         this.matrix = new Matrix4();
         this.textureNum = -2;
+        this.prevColor = this.textureNum;
         this.verticies = this.generateVerticies(this.color);
     }
 
@@ -21,7 +22,7 @@ class Sphere {
         gl.uniform1i(u_whichTexture, texNum);
         gl.uniformMatrix4fv(u_ModelMatrix, false, matrix.elements);
 
-        gl.drawArrays(gl.TRIANGLES, 0, verticies.length / 9);
+        gl.drawArrays(gl.TRIANGLES, 0, verticies.length / 12);
     }
 
     initSphereBuffer() {
@@ -38,14 +39,17 @@ class Sphere {
         gl.bindBuffer(gl.ARRAY_BUFFER, sphereBuffer);
 
 
-        gl.vertexAttribPointer(a_Position, 3, gl.FLOAT, false, 9 * FLOAT_SIZE, 0);
+        gl.vertexAttribPointer(a_Position, 3, gl.FLOAT, false, 12 * FLOAT_SIZE, 0);
         gl.enableVertexAttribArray(a_Position);
 
-        gl.vertexAttribPointer(a_UV, 2, gl.FLOAT, false, 9 * FLOAT_SIZE, 3 * FLOAT_SIZE);
+        gl.vertexAttribPointer(a_UV, 2, gl.FLOAT, false, 12 * FLOAT_SIZE, 3 * FLOAT_SIZE);
         gl.enableVertexAttribArray(a_UV);
 
-        gl.vertexAttribPointer(a_Color, 4, gl.FLOAT, false, 9 * FLOAT_SIZE, 5 * FLOAT_SIZE);
+        gl.vertexAttribPointer(a_Color, 4, gl.FLOAT, false, 12 * FLOAT_SIZE, 5 * FLOAT_SIZE);
         gl.enableVertexAttribArray(a_Color);
+
+        gl.vertexAttribPointer(a_Normal, 3, gl.FLOAT, false, 12 * FLOAT_SIZE, 9 * FLOAT_SIZE);
+        gl.enableVertexAttribArray(a_Normal);
     }
 
     generateVerticies(color) {
@@ -63,13 +67,13 @@ class Sphere {
                 let uv3 = [(i) / Math.PI, (j + dd) / (2 * Math.PI)];
                 let uv4 = [(i + dd) / Math.PI, (j + dd) / (2 * Math.PI)];
 
-                vert = vert.concat(p1, uv1, color);
-                vert = vert.concat(p2, uv2, color);
-                vert = vert.concat(p4, uv4, color);
+                vert = vert.concat(p1, uv1, color, p1);
+                vert = vert.concat(p2, uv2, color, p2);
+                vert = vert.concat(p4, uv4, color, p4);
 
-                vert = vert.concat(p1, uv1, color);
-                vert = vert.concat(p4, uv4, color);
-                vert = vert.concat(p3, uv3, color);
+                vert = vert.concat(p1, uv1, color, p1);
+                vert = vert.concat(p4, uv4, color, p4);
+                vert = vert.concat(p3, uv3, color, p3);
             }
         }
 
