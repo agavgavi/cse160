@@ -23,7 +23,6 @@ class Cube {
         if (cubeBuffer == null) {
             this.initCubeBuffer();
         }
-        this.nMatrix.setInverseOf(this.matrix).transpose();
         gl.bufferData(gl.ARRAY_BUFFER, verticies, gl.STATIC_DRAW);
         gl.uniform1i(u_whichTexture, texNum);
         gl.uniformMatrix4fv(u_ModelMatrix, false, matrix.elements);

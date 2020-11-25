@@ -3,7 +3,7 @@ class Camera {
         canvas = document.getElementById('webgl');
         this.speed = .2;
         this.turn = 3;
-        this.eye = new Vector3([20, 2, 0]);
+        this.eye = new Vector3([20, 15, 0]);
         this.at = new Vector3([0, 0, 0]);
         this.up = new Vector3([0, 1, 0]);
         this.fov = 60;
