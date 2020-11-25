@@ -87,7 +87,6 @@ void main() {
     }
 
     vec3 lightVector =  u_lightPos - vec3(v_VertexPos);
-    float r = length(lightVector);
 
     vec3 L = normalize(lightVector);
     vec3 N = normalize(v_Normal);
@@ -104,7 +103,7 @@ void main() {
             gl_FragColor = vec4(spec + diff+amb, 1.0);
         }
     }
-    
+
 }`;
 
 // All Global Variables Here
@@ -133,6 +132,7 @@ let u_NormalMatrix;
 let u_whichTexture;
 
 let do_time = false;
+let doAnimation = false;
 let doNormals = false;
 
 let g_lightPos = [0, 32, -2];
@@ -167,6 +167,8 @@ function main() {
 
     document.addEventListener('pointerlockchange', lockChangeAlert, false);
     document.addEventListener('mozpointerlockchange', lockChangeAlert, false);
+
+    requestAnimationFrame(tick);
 
 }
 
@@ -369,6 +371,10 @@ function setUpAllEvents() {
     document.getElementById('lightSlideY').addEventListener('mousemove', function (ev) { if (ev.buttons) { g_lightPos[1] = this.value / 10; renderAllShapes(); } });
 
     document.getElementById('lightSlideZ').addEventListener('mousemove', function (ev) { if (ev.buttons) { g_lightPos[2] = this.value / 10; renderAllShapes(); } });
+
+    document.getElementById('animateOn').onclick = function () { doAnimation = true; tick(); };
+
+    document.getElementById('animateOff').onclick = function () { doAnimation = false; };
 }
 
 function keydown(ev) {
@@ -425,7 +431,6 @@ function coordsToWebGL(ev) {
 function renderAllShapes() {
 
     // Clear <canvas>
-    let startTime = performance.now();
     let projMat = camera.projectionMatrix;
     let viewMat = camera.viewMatrix;
 
@@ -448,16 +453,26 @@ function renderAllShapes() {
     drawBase();
     drawMap();
     drawDog();
-    if (do_time) {
-        var dur = performance.now() - startTime;
-        sendTextToHTML('MS: ' + Math.floor(dur) + " Blocks: " + baseBlocks.length + worldBlocks.length, 'fps');
-    }
-
 }
 
+function updateAnimationAngles() {
+    if (doAnimation) {
+        g_lightPos[0] = (32 * Math.sin(g_seconds / 2));
+        g_lightPos[1] = (32 * Math.cos(g_seconds / 2));
+    }
+}
+
+var g_startTime = performance.now() / 1000.0;
+var g_seconds = performance.now() / 1000.0 - g_startTime;
 function tick() {
+    g_seconds = performance.now() / 1000.0 - g_startTime;
+
+    updateAnimationAngles();
     renderAllShapes();
-    requestAnimationFrame(tick);
+
+    if (doAnimation) {
+        requestAnimationFrame(tick);
+    }
 }
 
 function sendTextToHTML(text, id) {
@@ -680,7 +695,7 @@ function generateBase() {
     sphere.textureNum = 2;
     sphere.prevColor = 2;
     sphere.matrix.translate(0, 3, 0);
-    // sphere.matrix.scale(2, 2, 2);
+    sphere.matrix.scale(2, 2, 2);
     sphere.render();
     baseBlocks.push(sphere);
 }
