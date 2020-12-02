@@ -1,6 +1,6 @@
 # This file uses centimeters as units for non-parametric coordinates.
 
-mtllib SatelliteDish.mtl
+mtllib satellite.mtl
 g default
 v 6.160343 10.737811 -2.998099
 v 5.222487 12.060780 -4.835567

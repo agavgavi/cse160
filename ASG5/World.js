@@ -42,7 +42,7 @@ function main() {
     document.addEventListener('keydown', onKeyDown, false);
 
     scene = new THREE.Scene();
-
+    loader = new THREE.TextureLoader();
     createGround();
 
     const geometries = generateGeometries();
@@ -51,19 +51,19 @@ function main() {
     createBackground();
 
 
-    cubes = [makeShape(geometries['box'], 0x44aa88, 0, true, true, "rock.png"), makeShape(geometries['sphere'], 0x44aa88, 2, false, true, 'ground.png'),];
+    cubes = createScene(geometries);
 
     createLights();
     requestAnimationFrame(render);
 }
 
-function makeShape(geometry, color, x, doRot = true, loadImage = false, url = "dirt.png") {
+function makeShape(geometry, attribute, x, doRot = true) {
 
     let material;
-    if (loadImage) {
-        material = new THREE.MeshPhongMaterial({ map: loader.load("resources/images/" + url) });
-    } else {
-        material = new THREE.MeshPhongMaterial({ color });
+    if (typeof (attribute) === 'string') {
+        material = new THREE.MeshPhongMaterial({ map: loader.load("resources/images/" + attribute) });
+    } else if (typeof (attribute) === 'number') {
+        material = new THREE.MeshPhongMaterial({ attribute });
     }
     const shapeObj = {};
     const shape = new THREE.Mesh(geometry, material);
@@ -126,67 +126,35 @@ function generateGeometries() {
 }
 
 function loadObjects() {
-    const mtlLoader = new MTLLoader();
-    mtlLoader.load('resources/models/windmill/windmill.mtl', (mtlParsedResult) => {
-        const objLoader = new OBJLoader2();
-        const mat = MtlObjBridge.addMaterialsFromMtlLoader(mtlParsedResult);
-        mat.Material.side = THREE.DoubleSide;
-        objLoader.addMaterials(mat);
-        objLoader.load('resources/models/windmill/windmill.obj', (root) => {
-            root.position.set(-10, 0, -10);
-            root.traverse((child) => {
-                child.castShadow = true;
-                child.receiveShadow = true;
-            });
-            scene.add(root);
-        });
+    const objListC = [
+        new Obj3D('windmill', [-10, 0, -10]),
+        new Obj3D('astronaut', [5, 0, -5]),
+        new Obj3D('telescope', [3, 1, -5]),
+        new Obj3D('satellite', [-6, 0, 2.5], .2),
+    ]
+    objListC.forEach(function (value) {
+        createObj(value.name, value.pos, value.scale);
     });
 
     // Astronaut model designed by Poly by Google: https://poly.google.com/view/dLHpzNdygsg
-    mtlLoader.load('resources/models/astronaut/Astronaut.mtl', (mtlParsedResult) => {
-        const objLoader = new OBJLoader2();
-        const mat = MtlObjBridge.addMaterialsFromMtlLoader(mtlParsedResult);
-        objLoader.addMaterials(mat);
-        objLoader.load('resources/models/astronaut/Astronaut.obj', (root) => {
-            root.position.set(5, 0, -5);
-            root.traverse((child) => {
-                child.castShadow = true;
-                child.receiveShadow = true;
-            });
-            // root.rotation.y = Math.PI / -2;
-            scene.add(root);
-        });
-    });
-
     // Telescope model designed by Don Carson: https://poly.google.com/view/3HJCpDzBQEw
-    mtlLoader.load('resources/models/telescope/materials.mtl', (mtlParsedResult) => {
-        const objLoader = new OBJLoader2();
-        const mat = MtlObjBridge.addMaterialsFromMtlLoader(mtlParsedResult);
-        objLoader.addMaterials(mat);
-        objLoader.load('resources/models/telescope/model.obj', (root) => {
-            root.position.set(3, 1, -5);
-            root.scale.set(2, 2, 2);
-            root.traverse((child) => {
-                child.castShadow = true;
-                child.receiveShadow = true;
-            });
-            scene.add(root);
-        });
-    });
-
     // Satellite Dish model designed by Poly by Google: https://poly.google.com/view/5iVbfDhRnN7
-    mtlLoader.load('resources/models/satellite/SatelliteDish.mtl', (mtlParsedResult) => {
+
+}
+
+function createObj(path, pos, scale = [1, 1, 1]) {
+    const mtlLoader = new MTLLoader();
+    mtlLoader.load(`resources/models/${path}/${path}.mtl`, (mtlParsedResult) => {
         const objLoader = new OBJLoader2();
         const mat = MtlObjBridge.addMaterialsFromMtlLoader(mtlParsedResult);
         objLoader.addMaterials(mat);
-        objLoader.load('resources/models/satellite/SatelliteDish.obj', (root) => {
-            root.position.set(-6, 0, 2.5);
-            root.scale.set(.2, .2, .2);
+        objLoader.load(`resources/models/${path}/${path}.obj`, (root) => {
+            root.position.set(pos[0], pos[1], pos[2]);
+            root.scale.set(scale[0], scale[1], scale[2]);
             root.traverse((child) => {
                 child.castShadow = true;
                 child.receiveShadow = true;
             });
-
             scene.add(root);
         });
     });
@@ -253,7 +221,6 @@ function createLights() {
 }
 
 function createGround(planeSize = 40) {
-    const loader = new THREE.TextureLoader();
     const texture = loader.load('./resources/images/ground.png');
     texture.wrapS = THREE.RepeatWrapping;
     texture.wrapT = THREE.RepeatWrapping;
@@ -273,8 +240,6 @@ function createGround(planeSize = 40) {
 }
 
 function createBackground() {
-
-    loader = new THREE.TextureLoader();
     const bgTexture = loader.load('resources/images/skybox.jpg', () => {
         const rt = new THREE.WebGLCubeRenderTarget(bgTexture.image.height);
         rt.fromEquirectangularTexture(renderer, bgTexture);
@@ -283,4 +248,19 @@ function createBackground() {
         scene.fog = new THREE.FogExp2('lightblue', .06, 100);
     });
 }
+
+
+function createScene(geometries) {
+    return [makeShape(geometries['box'], "rock.png", 0), makeShape(geometries['sphere'], 'ground.png', 2, false), makeShape(geometries['sphere'], 0x44aa88, 4, false)];
+}
+
+
+class Obj3D {
+    constructor(name, pos = [0, 0, 0], scale = 1) {
+        this.name = name;
+        this.pos = pos;
+        this.scale = [scale, scale, scale];
+    }
+};
+
 main();
