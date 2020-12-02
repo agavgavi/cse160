@@ -13,6 +13,7 @@ let canvas;
 function main() {
     canvas = document.querySelector("#webgl");
     renderer = new THREE.WebGLRenderer({ canvas, logarithmicDepthBuffer: true, });
+    renderer.shadowMap.enabled = true;
     renderer.autoClearColor = false;
     renderer.physicallyCorrectLights = true;
 
@@ -66,7 +67,8 @@ function makeShape(geometry, color, x, doRot = true, loadImage = false, url = "d
     }
     const shapeObj = {};
     const shape = new THREE.Mesh(geometry, material);
-
+    shape.castShadow = true;
+    shape.receiveShadow = true;
     shape.position.set(2 + x, .5, 0);
     scene.add(shape);
     shapeObj['obj'] = shape;
@@ -199,6 +201,7 @@ function createLights() {
         const color = 0x650b94;
         const intensity = 2;
         const light = new THREE.PointLight(color, intensity);
+        light.castShadow = true;
         light.power = 800;
         light.decay = 1;
         light.distance = Infinity;
@@ -247,6 +250,7 @@ function createGround(planeSize = 40) {
         side: THREE.DoubleSide,
     });
     const mesh = new THREE.Mesh(planeGeo, planeMat);
+    mesh.receiveShadow = true;
     mesh.rotation.x = Math.PI * -.5;
     scene.add(mesh);
 }
