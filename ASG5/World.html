@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Andrew Gavgavian's Assignment 5 for CSE160</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+    <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
+</head>
+
+<body>
+    <section class="section">
+        <div class="container">
+            <h1 class="title">
+                Andrew Gavgavian's Assignment 3 For CSE160 (Moon maze)
+            </h1>
+
+            <canvas id="webgl" width="1200" height="600">
+                Please use a browser that supports "canvas"
+            </canvas>
+            <div class="columns is-half">
+                <div class="column">
+                    <p class="is-size-3">Options:</p>
+                    <p id='fps'></p>
+                    <div class="buttons">
+                        <button class="button is-info" id="lightOn">Activate Light</button>
+                        <button class="button is-success" id="lightOff">Deactivate Light</button>
+                        <button class="button is-info" id="normalOn">Activate Normal</button>
+                        <button class="button is-success" id="normalOff">Deactivate Normal</button>
+                        <button class="button is-info" id="animateOn">Activate Animations</button>
+                        <button class="button is-success" id="animateOff">Deactivate Animations</button>
+                    </div>
+                    <div>
+                        X-Axis Light Angle: <input type="range" min=-640 max=640 value=0 id="lightSlideX">
+                    </div>
+                    <div>
+                        Y-Axis Light Angle: <input type="range" min=-640 max=640 value=320 id="lightSlideY">
+                    </div>
+                    <div>
+                        Z-Axis Light Angle: <input type="range" min=-640 max=640 value=-20 id="lightSlideZ">
+                    </div>
+                </div>
+                <div class="column">
+                    <p><span class="subtitle">Cool features:</span>
+                    <ul>
+                        <li>Movable camera with mouse lock</li>
+                        <li>Lighting Applied to world and Dog Spaceman</li>
+                        <li>Rotating sun object</li>
+                        <li>Controls: WASD planer movement. Q/E planer rotate. Space/Shift up/down</li>
+                    </ul>
+                    </p>
+                </div>
+            </div>
+
+
+        </div>
+    </section>
+    <script type="module" src="World.js"></script>
+</body>
+
+</html>
