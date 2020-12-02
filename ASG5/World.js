@@ -134,6 +134,10 @@ function loadObjects() {
         objLoader.addMaterials(mat);
         objLoader.load('resources/models/windmill/windmill.obj', (root) => {
             root.position.set(-10, 0, -10);
+            root.traverse((child) => {
+                child.castShadow = true;
+                child.receiveShadow = true;
+            });
             scene.add(root);
         });
     });
@@ -145,6 +149,10 @@ function loadObjects() {
         objLoader.addMaterials(mat);
         objLoader.load('resources/models/astronaut/Astronaut.obj', (root) => {
             root.position.set(5, 0, -5);
+            root.traverse((child) => {
+                child.castShadow = true;
+                child.receiveShadow = true;
+            });
             // root.rotation.y = Math.PI / -2;
             scene.add(root);
         });
@@ -158,6 +166,10 @@ function loadObjects() {
         objLoader.load('resources/models/telescope/model.obj', (root) => {
             root.position.set(3, 1, -5);
             root.scale.set(2, 2, 2);
+            root.traverse((child) => {
+                child.castShadow = true;
+                child.receiveShadow = true;
+            });
             scene.add(root);
         });
     });
@@ -170,6 +182,11 @@ function loadObjects() {
         objLoader.load('resources/models/satellite/SatelliteDish.obj', (root) => {
             root.position.set(-6, 0, 2.5);
             root.scale.set(.2, .2, .2);
+            root.traverse((child) => {
+                child.castShadow = true;
+                child.receiveShadow = true;
+            });
+
             scene.add(root);
         });
     });
