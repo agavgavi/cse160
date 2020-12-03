@@ -10,15 +10,17 @@ let loader;
 let cubes;
 let renderer;
 let canvas;
+let geometries;
 function main() {
     canvas = document.querySelector("#webgl");
     renderer = new THREE.WebGLRenderer({ canvas, logarithmicDepthBuffer: true, });
     renderer.shadowMap.enabled = true;
-    renderer.autoClearColor = false;
+    //renderer.autoClearColor = false;
     renderer.physicallyCorrectLights = true;
 
     camera = makeCamera();
     camera.position.set(0, 1, 20);
+
     const controls = new PointerLockControls(camera, canvas);
     canvas.addEventListener('click', function () { controls.lock(); }, false);
 
@@ -45,34 +47,85 @@ function main() {
     loader = new THREE.TextureLoader();
     createGround();
 
-    const geometries = generateGeometries();
+    geometries = generateGeometries();
 
     loadObjects();
     createBackground();
 
 
-    cubes = createScene(geometries);
+    cubes = createScene();
 
     createLights();
     requestAnimationFrame(render);
 }
 
-function makeShape(geometry, attribute, x, doRot = true) {
+function makeShape(geometry, attribute, pos, doRot = true) {
 
     let material;
     if (typeof (attribute) === 'string') {
         material = new THREE.MeshPhongMaterial({ map: loader.load("resources/images/" + attribute) });
     } else if (typeof (attribute) === 'number') {
-        material = new THREE.MeshPhongMaterial({ attribute });
+        material = new THREE.MeshPhongMaterial({ color: attribute });
     }
     const shapeObj = {};
     const shape = new THREE.Mesh(geometry, material);
     shape.castShadow = true;
     shape.receiveShadow = true;
-    shape.position.set(2 + x, .5, 0);
+    shape.position.set(pos[0], pos[1], pos[2]);
+
     scene.add(shape);
     shapeObj['obj'] = shape;
     shapeObj['doRot'] = doRot;
+    return shapeObj;
+}
+
+function makeUFO(pos, doRotate = false) {
+
+    const shapeObj = {};
+    const diskRadius = 1;
+    const diskWidth = 27;
+    const diskHeight = 27;
+    const trunkHeight = .2;
+    const coneR = 1;
+    const coneH = 8;
+    const coneSeg = 27;
+
+    const diskGeometry = new THREE.SphereBufferGeometry(diskRadius, diskWidth, diskHeight);
+    const domeGeometry = new THREE.SphereBufferGeometry(diskRadius, diskWidth, diskHeight, 0, Math.PI);
+    const suckGeometry = new THREE.CylinderBufferGeometry(coneR / 3, coneR * 1.5, coneH, coneSeg);
+
+    const trunkMaterial = new THREE.MeshPhongMaterial({
+        color: 'brown',
+        side: THREE.DoubleSide,
+    });
+    const topMaterial = new THREE.MeshPhongMaterial({
+        color: 'green',
+        side: THREE.DoubleSide,
+    });
+    const suckMaterial = new THREE.MeshPhongMaterial({
+        color: 'green',
+        opacity: 0.5,
+        transparent: true,
+    });
+    const root = new THREE.Object3D();
+    const trunk = new THREE.Mesh(diskGeometry, trunkMaterial);
+    trunk.scale.set(2, .2, 2);
+    trunk.position.y = trunkHeight / 2;
+    root.add(trunk);
+
+    const top = new THREE.Mesh(domeGeometry, topMaterial);
+    top.position.y = trunkHeight;
+    top.rotation.x = Math.PI * -.5;
+    root.add(top);
+
+    const suck = new THREE.Mesh(suckGeometry, suckMaterial);
+    suck.position.y = (trunkHeight / 2) - 3;
+    root.add(suck);
+
+    root.position.set(pos[0], pos[1] + 6, pos[2]);
+    scene.add(root);
+    shapeObj['obj'] = root;
+    shapeObj['doRot'] = doRotate;
     return shapeObj;
 }
 
@@ -216,7 +269,7 @@ function createLights() {
             light.target.updateMatrixWorld();
             helper.update();
         }
-        updateLight()
+        updateLight();
     }
 }
 
@@ -229,10 +282,12 @@ function createGround(planeSize = 40) {
     texture.repeat.set(repeats, repeats);
 
     const planeGeo = new THREE.PlaneBufferGeometry(planeSize, planeSize);
+
     const planeMat = new THREE.MeshPhongMaterial({
         map: texture,
         side: THREE.DoubleSide,
     });
+
     const mesh = new THREE.Mesh(planeGeo, planeMat);
     mesh.receiveShadow = true;
     mesh.rotation.x = Math.PI * -.5;
@@ -245,13 +300,24 @@ function createBackground() {
         rt.fromEquirectangularTexture(renderer, bgTexture);
 
         scene.background = rt;
-        scene.fog = new THREE.FogExp2('lightblue', .06, 100);
+        scene.fog = new THREE.FogExp2('lightblue', .03, 100);
     });
 }
 
 
-function createScene(geometries) {
-    return [makeShape(geometries['box'], "rock.png", 0), makeShape(geometries['sphere'], 'ground.png', 2, false), makeShape(geometries['sphere'], 0x44aa88, 4, false)];
+function createScene() {
+    let list = [
+        makeShape(geometries['box'], "rock.png", [2, .5, 0]),
+        makeShape(geometries['sphere'], 'ground.png', [4, 1, 0], false),
+        makeShape(geometries['sphere'], 0x44aa88, [6, 1, 0], false),
+
+    ];
+    for (let z = -20; z <= 20; z += 10) {
+        for (let x = -20; x <= 20; x += 10) {
+            list.push(makeUFO([x, 1, z], false));
+        }
+    }
+    return list;
 }
 
 
