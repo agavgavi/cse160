@@ -1,5 +1,7 @@
 import * as THREE from 'https://threejsfundamentals.org/threejs/resources/threejs/r122/build/three.module.js';
 import { PointerLockControls } from 'https://threejsfundamentals.org/threejs/resources/threejs/r122/examples/jsm/controls/PointerLockControls.js';
+
+import { OrbitControls } from 'https://threejsfundamentals.org/threejs/resources/threejs/r122/examples/jsm/controls/OrbitControls.js';
 import { OBJLoader2 } from 'https://threejsfundamentals.org/threejs/resources/threejs/r122/examples/jsm/loaders/OBJLoader2.js';
 import { MTLLoader } from 'https://threejsfundamentals.org/threejs/resources/threejs/r122/examples/jsm/loaders/MTLLoader.js';
 import { MtlObjBridge } from 'https://threejsfundamentals.org/threejs/resources/threejs/r122/examples/jsm/loaders/obj2/bridge/MtlObjBridge.js';
@@ -11,8 +13,11 @@ let cubes;
 let renderer;
 let canvas;
 let geometries;
+let orbit = true;
+let controls;
 function main() {
     canvas = document.querySelector("#webgl");
+    document.getElementById('cameraChange').onclick = function () { orbit = !orbit; makeControls(); };
     renderer = new THREE.WebGLRenderer({ canvas, logarithmicDepthBuffer: true, });
     renderer.shadowMap.enabled = true;
     //renderer.autoClearColor = false;
@@ -21,27 +26,10 @@ function main() {
     camera = makeCamera();
     camera.position.set(0, 1, 20);
 
-    const controls = new PointerLockControls(camera, canvas);
-    canvas.addEventListener('click', function () { controls.lock(); }, false);
+    makeControls();
 
-    const onKeyDown = function (event) {
-        switch (event.keyCode) {
-            case 87: // w
-                controls.moveForward(.25)
-                break;
-            case 65: // a
-                controls.moveRight(-.25)
-                break;
-            case 83: // s
-                controls.moveForward(-.25)
-                break;
-            case 68: // d
-                controls.moveRight(.25)
-                break;
-        }
-    };
 
-    document.addEventListener('keydown', onKeyDown, false);
+
 
     scene = new THREE.Scene();
     loader = new THREE.TextureLoader();
@@ -57,6 +45,39 @@ function main() {
 
     createLights();
     requestAnimationFrame(render);
+}
+
+function makeControls() {
+    if (!orbit) {
+
+        controls = new PointerLockControls(camera, canvas);
+        canvas.addEventListener('click', function () { controls.lock(); }, false);
+        const onKeyDown = function (event) {
+            switch (event.keyCode) {
+                case 87: // w
+                    controls.moveForward(.25)
+                    break;
+                case 65: // a
+                    controls.moveRight(-.25)
+                    break;
+                case 83: // s
+                    controls.moveForward(-.25)
+                    break;
+                case 68: // d
+                    controls.moveRight(.25)
+                    break;
+            }
+
+        };
+
+        document.addEventListener('keydown', onKeyDown, false);
+    }
+    else {
+
+        controls = new OrbitControls(camera, canvas);
+        controls.target.set(0, 5, 0);
+        controls.update();
+    }
 }
 
 function makeShape(geometry, attribute, pos, doRot = true) {
